@@ -1,0 +1,57 @@
+Avanti Makarand Thale
+
+Roha
+8605131403
+
+To obtain a challenging position in software design while contributing significantly to the company's growth.
+
+PERSONAL INFORMATION
+  Address: , Roha, 
+  Nationality: 
+  Driving License: 
+  Hobbies: Reading Books, Listening Music
+
+SOCIAL PROFILES
+  * : 
+
+SKILLS
+  Leadership
+  Problem Solving
+  Teamwork
+
+EDUCATION
+  * August 2020 – Present
+    University Of Mumbai , Mumbai Graduation
+
+    B.Tech in Computer Science with Specialization in Data Science and Natural Language Processing through Pillai College Of Engineering, Panvel
+  * March 2020
+    Jindal Mount Litera Zee School Nagothane, Roha H.S.C
+
+    scored 84% in XII Science CBSE in (PCMB)
+  * March 2018
+    Jindal Vidya Mandir Salav, Murud S.S.C 
+
+    scored 94% in class X CBSE
+
+ACHIEVEMENTS
+  * Project Deep Blue, , 
+
+    Participated in Project Deep Blue as the Leader of the team and worked on the solution on Summarizing the teams meeting
+PROJECTS DONE
+  * Diabetes Detection System, , 
+
+    using Python, Flask Application using (SVM) Support Vector Machine Algorithm
+  * Book Review Site, , 
+
+    using CSS, Html, Javascript, PHP
+  * Railway Reservation System, , 
+
+    using Python Flask
+LANGUAGES
+  * Python, , 
+  * Java, , 
+  * Javascript, , 
+  * HTML, , 
+  * CSS, , 
+  * C, , 
+  * Django, , 
