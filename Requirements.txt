@@ -1,0 +1,7 @@
+pdfminer
+docx2txt
+spacy
+spacy.matcher
+nltk
+multiprocessing
+pprint
