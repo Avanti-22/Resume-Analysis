@@ -289,7 +289,7 @@ def docx_to_txt(docx_path):
 
 #     for competency in cs.COMPETENCIES.keys():
 #         for item in cs.COMPETENCIES[competency]:
-#             if string_found(item, experience_text):
+#             if (item, experience_text):
 #                 if competency not in competency_dict.keys():
 #                     competency_dict[competency] = [item]
 #                 else:
