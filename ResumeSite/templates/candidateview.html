@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content%}
+
+<header>
+  <!-- Intro settings -->
+  <style>
+    /* Default height for small devices */
+    #intro-example {
+      height: 400px;
+    }
+
+    /* Height for devices larger than 992px */
+    @media (min-width: 992px) {
+      #intro-example {
+        height: 600px;
+      }
+    }
+  </style>
+
+ <!-- Background image -->
+ <div id="intro-example" class="p-5 text-center bg-image">
+  <div class="mask" style="background-color: #C7C5C0;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <div class="text">
+        <h1 class="mb-3">Login to compare your resume and find the ranking!</h1>
+        <h5 class="mb-4">
+          You can upload your resume and find the appropriate job descriptions for you.
+        </h5>
+        <a class="btn btn-lg m-2" href="{% url "userlogin" %}" role="button" style="background-color: #94949C;">Login</a>
+        <a class="btn btn-lg m-2" href="{% url "userreg" %}"  role="button" style="background-color: #94949C;">Register</a>
+          
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Background image -->
+
+</header>
+{% endblock content%}
+{% comment %} {% endblock register%} {% endcomment %}

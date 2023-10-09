@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content%}
+
+{% comment %} <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url "userlogin"%}">Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url "userreg"%}">Register</a>
+    </li>
+</ul> {% endcomment %}
+<section>
+    <div class="container py-5" >
+      <div class="row d-flex justify-content-center align-items-center " >
+        <div class="col-sm-12 col-md-11" >
+          <div class="card text-black" style="border-radius: 25px;" >
+            <div class="card-body p-2"   style="background-color: #C7C5C0; border-radius: 25px;">
+              <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-6 col-lg-5 order-2 order-md-1">
+  
+                  <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-2 mt-2">Sign up</p>
+  
+                  <form class="mx-1 mx-md-2" method="post" action="/register/">
+                    {% csrf_token %}
+                    
+                    <div class="d-flex flex-row align-items-center mb-2">
+                      <i class="fas fa-user fa-md me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="text" id="username" name="username" class="form-control" />
+                        <label class="form-label" for="username">Your Userame</label>
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-2">
+                      <i class="fas fa-envelope fa-md me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="email" id="email" name="email" class="form-control" />
+                        <label class="form-label" for="email">Your Email</label>
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-2">
+                      <i class="fas fa-lock fa-md me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="password" id="password" name="password" class="form-control" />
+                        <label class="form-label" for="password">Password</label>
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-2">
+                      <i class="fas fa-key fa-md me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="password" id="cpassword" name="cpassword" class="form-control" />
+                        <label class="form-label" for="cpassword">Repeat your password</label>
+                      </div>
+                    </div>
+  
+                    {% comment %} <div class="form-check d-flex justify-content-center mb-2">
+                      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                      <label class="form-check-label" for="form2Example3">
+                        I agree all statements in <a href="#!">Terms of service</a>
+                      </label>
+                    </div> {% endcomment %}
+  
+                    <div class="d-flex justify-content-center mx-2 mb-2 mb-md-4">
+                      <button type="submit" class="btn btn-md" style="background-color: #94949C;">Register</button>
+                    </div>
+  
+                  </form>
+  
+                </div>
+                <div class="col-sm-10 col-md-6 col-lg-7 d-flex align-items-center order-1 order-sm-2">
+  
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                    class="img-fluid" alt="Sample image">
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content%}

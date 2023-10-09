@@ -18,9 +18,13 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("webapp/", include("webapp.urls")),
+    path("", include("webapp.urls")),
     path("admin/", admin.site.urls),
     # path("accounts/", include("django.contrib.auth.urls")),
     # path("", include('theme_soft_design.urls')),
 
 ]
+
+admin.site.site_header = "Resume Analyzer Admin"
+admin.site.site_title = "Resume Analyzer Admin Portal"
+admin.site.index_title = "Welcome to Resume Analyzer Admin Portal"

@@ -20,3 +20,14 @@ class JobDescription(models.Model):
     Title = models.CharField(max_length=200)
     Required_Skills = models.TextField()
     Requires_Experience = models.CharField(max_length=200)
+    
+class Contact(models.Model):
+    Name=models.CharField(max_length=122)
+    Email=models.CharField(max_length=122)
+    Subject=models.TextField(max_length=200)
+    Message=models.TextField(max_length=300)
+    Date=models.DateField() 
+    
+    def __str__(self):
+        return self.Name
+    

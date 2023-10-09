@@ -1,0 +1,75 @@
+{% extends 'base.html' %}    
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Contact Us</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    
+<!--Section: Contact v.2-->
+<div class="container-md my-3" >
+    <!--Section heading-->
+    <h2 class="h1 font-weight-bold text-center my-4" style= "color: white;">Contact us</h2>
+    <!--Section description-->
+    <p class="text-center mb-4" style= "color: white;">Do you have any questions? Please do not hesitate to contact us directly. Our team will come back to you within
+        a matter of hours to help you.</p>
+
+    <div class="row mx-2 py-4" style="background-color: #C7C5C0;">
+
+        <!--Grid column-->
+        <div class="col-md-9 mb-md-0 mb-5">
+            <form actions="/contactus" method="post" style="background-color: #C7C5C0;">
+                {% csrf_token %}
+
+                <div class="form-group " >
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="name" class="">Your name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name">                
+                </div>
+                <div class="form-group">
+                    <label for="subject" class="">Subject</label>
+                    <input type="text" id="subject" name="subject" class="form-control" placeholder="Write the subject">
+                </div>
+                <div class="form-group">
+                    <label for="message">Your message</label>
+                    <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea" placeholder="Write your message"></textarea>
+                </div>
+                    <button class="btn " type="submit" style="background-color: #94949C;" >Submit</button>
+            </form>
+            
+           
+        <!--Grid column-->
+        
+
+        <!--Grid column-->
+        {% comment %} <div class="col-md-3 text-center" style="background-color: #C7C5C0;">
+            <ul class="list-unstyled mb-0">
+                <li><i class="fas fa-map-marker-alt fa-2x"></i>
+                    <p>San Francisco, CA 94126, USA</p>
+                </li>
+
+                <li><i class="fas fa-phone mt-4 fa-2x"></i>
+                    <p>+ 01 234 567 89</p>
+                </li>
+
+                <li><i class="fas fa-envelope mt-4 fa-2x"></i>
+                    <p>contact@mdbootstrap.com</p>
+                </li>
+            </ul>
+        </div> {% endcomment %}
+        <!--Grid column-->
+
+        </div>
+
+<!--Section: Contact v.2-->
+
+</html>
+{% endblock content %}
