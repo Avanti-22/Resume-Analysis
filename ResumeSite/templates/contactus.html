@@ -25,7 +25,21 @@
         <div class="col-md-9 mb-md-0 mb-5">
             <form actions="/contactus" method="post" style="background-color: #C7C5C0;">
                 {% csrf_token %}
+                <style type="text/css">
 
+                input{
+                    height: 30px !important;
+                    width:500px  !important;
+                    border:  solid;
+                    display: block;
+                }
+                textarea{
+                    height: 50px !important;
+                    width:500px  !important;
+                    border:  solid;
+                    display: block;
+                }
+            </style>
                 <div class="form-group " >
                     <label for="email">Email address</label>
                     <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email">
