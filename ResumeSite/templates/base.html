@@ -37,9 +37,19 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/home" style="color: white;">Home</a>
           </li>
-          <li class="nav-item">
+          {% comment %} <li class="nav-item">
             <a class="nav-link" href="" style="color: white;">Login/Register</a>
+          </li> {% endcomment %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"style="color: white;">Login/Register</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url "userlogin" %}">Login</a></li>
+              <li><a class="dropdown-item" href="{% url "userreg" %}">Register</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url "hrview" %}">Login as Recruiter</a></li>
+            </ul>
           </li>
+          
           <li class="nav-item">
             <a class="nav-link" href="/aboutus" style="color: white;">About Us</a>
           </li>
