@@ -1,148 +1,76 @@
-{% extends 'base.html' %}    
+{% extends 'base.html' %}
+
 {% block content %}
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>About US</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <style>
-            body {
-                font-family: Arial, Helvetica, sans-serif;
-                margin: 0;
-              }
-              
-              html {
-                box-sizing: border-box;
-              }
-              
-              *, *:before, *:after {
-                box-sizing: inherit;
-              }
-              
-              .column {
-                float: left;
-                width: 25%;
-                margin-bottom: 16px;
-                padding: 0 8x;
-              }
-              
-              .card {
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-                margin: 8px;
-              }
-              
-              .about-section {
-                padding: 50px;
-                text-align: center;
-                {% comment %} background-color: #474e5d; {% endcomment %}
-                color: white;
-              }
-              
-              .container {
-                padding: 0 16px;
-              }
-              
-              .container::after, .row::after {
-                content: "";
-                clear: both;
-                display: table;
-              }
-              
-              .title {
-                color: grey;
-              }
-              
-              .button {
-                border: none;
-                outline: 0;
-                display: inline-block;
-                padding: 8px;
-                color: white;
-                background-color: #000;
-                text-align: center;
-                cursor: pointer;
-                width: 100%;
-              }
-              
-              .button:hover {
-                background-color: #555;
-              }
-              
-              @media screen and (max-width: 650px) {
-                .column {
-                  width: 100%;
-                  display: block;
-                }
-              }
-        </style>
-    </head>
-    <div class="about-section" style="color: white; ">
-        <h1>About Us Page</h1>
-        <p>Some text about who we are and what we do.</p>
-        <p>Resize the browser window to see that this page is responsive by the way.</p>
-      </div>
-      
-      <h2 style="text-align:center; color: white;">Our Team</h2>
-      <div class="row">
-        <div class="column">
-          <div class="card" style="background-color: #C7C5C0; ">
+<div class="about-section" style="background-color: #C7C5C0; text-align: center; padding: 50px; color: white;">
+    <div class="container">
+        <h1>About Us</h1>
+        <p>Welcome to HireBoost, where we simplify your job search with our Resume Analyzer!.</p>
+        <p>What We Do:</p>
+    
+            <p> 1.Resume Analysis: We use advanced technology to analyze your resume and provide valuable feedback.</p>
+            <p> 2.Personalized Tips: Receive tailored suggestions to improve your resume.</p>
+            <p> 3.Career Support: We offer guidance to boost your job search success.</p>
+        <p>Our team is dedicated to your success, and we're always improving our services to provide the best resume-building experience.</p>
+    </div>
+</div>
+
+<h2 style="text-align: center; color: white;">Our Team</h2>
+
+
+
+
+
+<div class="row" style="text-align: center;">
+    <div class="column" style="width: 25%;">
+        <div class="card" style="background-color: #C7C5C0;">
             <img src="/w3images/team1.jpg" alt="Avanti" style="width:100%">
             <div class="container">
-              <h2>Avanti Thale</h2>
-              <p class="title">Student</p>
-              <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-              <p>avanti@example.com</p>
-              <p><button class="button" style="color: #9B9C94;">Contact</button></p>
+                <h2>Avanti Thale</h2>
+                <p class="title">Student</p>
+                <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                <p>avanti@example.com</p>
+                <p><button class="button" style="color: #9B9C94;">Contact</button></p>
             </div>
-          </div>
         </div>
-      
-        <div class="column">
-          <div class="card" style="background-color: #C7C5C0; ">
-            <img src="/w3images/team2.jpg" alt="Mrunal" style="width:100%">
+    </div>
+
+    <div class="column" style="width: 25%;">
+        <div class="card" style="background-color: #C7C5C0;">
+            <img src="https://media.licdn.com/dms/image/D4D03AQGafOCcyEECEg/profile-displayphoto-shrink_800_800/0/1697218485661?e=1702512000&v=beta&t=B2msoFjJ9zYV2g06YjzBy-7H4Nh3Qci1vJ6xKNOBFJM" alt="Mrunal" style="width:100%">
             <div class="container">
-              <h2>Mrunal Kulkarni</h2>
-              <p class="title">Student</p>
-              <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-              <p>mrunalkulkarni.2802@gmail.com</p>
-              <p><button class="button" style="color: #9B9C94;">Contact</button></p>
+                <h2>Mrunal Kulkarni</h2>
+                <p class="title">Student</p>
+                <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                <p>mrunalkulkarni.2802@gmail.com</p>
+                <p><button class="button" style="color: #9B9C94;">Contact</button></p>
             </div>
-          </div>
         </div>
-      
-        <div class="column">
-          <div class="card" style="background-color: #C7C5C0; ">
+    </div>
+
+    <div class="column" style="width: 25%;">
+        <div class="card" style="background-color: #C7C5C0;">
+            <img src="https://media.licdn.com/dms/image/D4D03AQF8Onzza74G2w/profile-displayphoto-shrink_200_200/0/1691484728905?e=1700092800&v=beta&t=5wd_0zIdHDyKle-ghQCWXEJiIfRUUQuWuEsL-xoB3Dg" alt="Pranjali" style="width:100%">
+            <div class="container">
+                <h2>Pranjali Polawar</h2>
+                <p class="title">Student</p>
+                <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                <p>pranjupolawar27@gmail.com</p>
+                <p><button class="button" style="color: #9B9C94;">Contact</button></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="column" style="width: 25%;">
+        <div class="card" style="background-color: #C7C5C0;">
             <img src="https://media.licdn.com/dms/image/D4D03AQGaY2yzNuYIgw/profile-displayphoto-shrink_400_400/0/1691484909307?e=1701907200&v=beta&t=fcRdTTTxfodKZbt48hBNTZkJLIQ8EmA0OngiCapSPso" alt="Maheshwari" style="width:100%">
             <div class="container">
-              <h2>Maheshwari Udhayan</h2>
-              <p class="title">Student</p>
-              <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-              <p>maheshwariudhayan1@gmail.com</p>
-              <p><button class="button" style="color: #9B9C94;">Contact</button></p>
+                <h2>Maheshwari Udhayan</h2>
+                <p class="title">Student</p>
+                <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                <p>maheshwariudhayan1@gmail.com</p>
+                <p><button class="button" style="color: #9B9C94;">Contact</button></p>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="column">
-        <div class="card" style="background-color: #C7C5C0; ">
-          <img src="https://media.licdn.com/dms/image/D4D03AQF8Onzza74G2w/profile-displayphoto-shrink_200_200/0/1691484728905?e=1700092800&v=beta&t=5wd_0zIdHDyKle-ghQCWXEJiIfRUUQuWuEsL-xoB3Dg" alt="Pranjali" style="width:100%">
-          <div class="container">
-            <h2>Pranjali Polawar</h2>
-            <p class="title">Designer</p>
-            <p>Some text that describes me lorem ipsum ipsum lorem.</p>
-            <p>pranjupolawar27@gmail.com</p>
-            <p><button class="button" style="color: #9B9C94;">Contact</button></p>
-          </div>
-        </div>
-      </div>
     </div>
-</html>
+</div>
 {% endblock content %}
