@@ -1,24 +1,15 @@
 from django.shortcuts import render, redirect
-from django.template import loader
-from django.http import HttpResponse
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.contrib.auth import logout, login
-
+from django.contrib.auth import authenticate, logout, login
 from datetime import datetime
 from django.contrib import messages
 from webapp.models import Contact
 
 # Create your views here.
 def home(request):
-    # messages.success(request,'test messg')
     return render(request,'home.html')
-@login_required()
-
-def dashboardView(request):
-    return render(request,'dashboard.html')
+# @login_required()
 
 def aboutView(request):
     return render(request,'aboutus.html')
@@ -32,13 +23,31 @@ def contactView(request):
         contact = Contact(Name=name, Email=email, Subject=subject, Message=message, Date=datetime.today())
         contact.save()
         messages.success(request, "Your message has been sent.")
-
     return render(request,'contactus.html')
 
 def faqView(request):
     return render(request,'faq.html')
 
+# def dashboardView(request):
+#     return render(request,'dashboard.html')
+
 def hrview(request):
+    
+    if request.method=="POST":
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        #validate the user
+        print(username,password)
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            # A backend authenticated the credentials
+            login(request, user)
+            return render(request,'req_form.html')    
+        else:
+            # No backend authenticated the credentials
+            return render(request, 'hrview.html')
+
     return render(request, 'hrview.html')
 
 def userview(request):
@@ -66,6 +75,11 @@ def upload(request):
     if request.user.is_anonymous:
         return render(request,'login.html')
     return render(request, 'upload.html')
+
+def req(request):
+    if request.user.is_anonymous:
+        return render(request,'login.html')
+    return render(request, 'ref_form.html')
 
 def userlogout(request):
     logout(request)
