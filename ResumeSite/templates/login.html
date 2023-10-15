@@ -10,27 +10,41 @@
       <a class="nav-link" href="{% url "userreg"%}">Register</a>
     </li>
 </ul> {% endcomment %}
+{% comment %} .center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height:20px; 
+  width:20px;
+  } {% endcomment %}
 <section >
     <div class="container py-5" >
       <div class="row d-flex justify-content-center align-items-center">
-        <div class="col col-xl-10">
-          <div class="card" style="border-radius: 1rem;" >
-            <div class="row g-0" style="background-color: #C7C5C0; border-radius: 1rem;">
-              <div class="col-md-6 col-lg-5 d-none d-md-block">
-                <img src="https://img.freepik.com/premium-photo/portrait-confident-young-woman-posing-with-exam-result-home-created-with-generative-ai_762026-23966.jpg"  style="width:400px;height:600px; "
+        <div class="col col-xl-10 ">
+          <div class="card " style="background-color: #C7C5C0; border-radius: 1rem;" >
+            {% comment %} <div class="d-flex justify-content-center align-items-center pb-1" style="border-radius: 1rem 0 0 1rem;">
+              <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+              <img src= "{% static 'images\ResumeLogo.png' %}" 
+              alt="login form" class="img" style="border-radius: 1rem 0 0 1rem;  height:300px; width:300px;  " />
+    
+            </div> {% endcomment %}
+            <div class="row g-0 p-0" style="background-color: #C7C5C0; border-radius: 1rem;">
+                          {% comment %} girl photo {% endcomment %}
+              <div class="col-md-6 col-lg-5 d-none d-md-block justify-content-center align-items-center"  >
+                <img src="https://img.freepik.com/premium-photo/portrait-confident-young-woman-posing-with-exam-result-home-created-with-generative-ai_762026-23966.jpg"  style="width:450px;height:800px; "
                 
-                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                  alt="login form" class="img-fluid  px-3 my-3 py-5" style="border-radius: 25px;" />
               </div>
-              <div class="col-md-6 col-lg-7 d-flex align-items-center" >
-                <div class="card-body p-4 p-lg-5 text-black">
+              <div class="col-md-6 col-lg-7 d-flex " >
+                <div class="card-body text-black">
 
                   <form method="post" action="/login/">
                     {% csrf_token %}
 
-                    <div class="d-flex align-items-center mb-3 pb-1">
+                    <div class="d-flex align-items-center mb-3 pb-1" style="border-radius: 1rem 0 0 1rem;">
                       <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                      <img src="images\ResumeLogo1.png"  style="width:10px;height:20px; "
-                      alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                      <img src= "{% static 'images\Resume Logo.png' %}" 
+                      alt="login form" class="img justify-content-center my-5 pt-2 mx-5  " style="border-radius: 1rem 0 0 1rem;  height:200px; width:200px;  " />
             
                     </div>
   
