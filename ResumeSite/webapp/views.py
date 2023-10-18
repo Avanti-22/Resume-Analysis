@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, logout, login
 from datetime import datetime
 from django.contrib import messages
 from webapp.models import Contact
+from webapp.models import Resumeform
+import os
+# from .forms import PDFUploadForm
 
 # Create your views here.
 def home(request):
@@ -71,10 +74,38 @@ def userlogin(request):
 
     return render(request, 'login.html')
 
+
+
 def upload(request):
     if request.user.is_anonymous:
-        return render(request,'login.html')
-    return render(request, 'upload.html')
+        return render(request, 'login.html')
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        resumefile = request.FILES.get('file')  # Use request.FILES to access the uploaded file
+
+        if resumefile:
+            # Create the directory if it doesn't exist
+            upload_folder = 'pdfs'
+            os.makedirs(upload_folder, exist_ok=True)
+
+            # Save the uploaded file to the specified location
+            with open(os.path.join(upload_folder, resumefile.name), 'wb') as destination:
+                for chunk in resumefile.chunks():
+                    destination.write(chunk)
+
+            # Create and save the model instance
+            resumeform = Resumeform(Name=name, Email=email, Resumefile=os.path.join(upload_folder, resumefile.name))
+            resumeform.save()
+
+            messages.success(request, "Your form has been submitted.")
+            return redirect('matched_percent')  # Redirect to a success page
+    else:
+        # Handle GET request or render the initial form
+        return render(request, 'upload.html')
+
+    # return render(request, 'upload.html')
 
 def req(request):
     if request.user.is_anonymous:
@@ -113,6 +144,19 @@ def userreg(request):
             return render(request, 'register.html')
 
     return render(request, 'register.html')
+
+
+# def upload_pdf(request):
+#     if request.method == 'POST':
+#         form = PDFUploadForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             pdf_file = form.save()
+#             return redirect('success_url')  # Redirect to a success page
+
+#     else:
+#         form = PDFUploadForm()
+
+#     return render(request, 'upload_pdf.html', {'form': form})
 
 # def registerView(request):
 #     if request.method == "POST":

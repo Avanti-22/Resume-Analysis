@@ -26,8 +26,19 @@ class Contact(models.Model):
     Email=models.CharField(max_length=122)
     Subject=models.TextField(max_length=200)
     Message=models.TextField(max_length=300)
-    Date=models.DateField() 
-    
+    Date=models.DateField()
+
     def __str__(self):
         return self.Name
+
+class Resumeform(models.Model):
+    Name=models.CharField(max_length=122)
+    Email=models.CharField(max_length=122)
+    Resumefile = models.FileField(upload_to='pdfs/')
     
+    def __str__(self):
+        return self.Name 
+    # upload_date = models.DateTimeField(auto_now_add=True)
+
+        
+

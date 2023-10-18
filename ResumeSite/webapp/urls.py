@@ -1,6 +1,9 @@
 from django.urls import path, include
 from django.contrib.auth.views import LoginView,LogoutView
 from . import views
+# from .views import upload_pdf
+from django.conf.urls.static import static
+from django.conf import settings
 
 # pass for avanti1 is Pass@123
 urlpatterns = [
@@ -17,4 +20,7 @@ urlpatterns = [
     path('req/',views.req,name="req"),
     path('register/',views.userreg,name="userreg"),
     path('logout/',views.userlogout,name="logout"),
+    # path('upload/', upload_pdf, name='upload_pdf'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 # Create your forms here.
-
 class NewUserForm(UserCreationForm):
 	email = forms.EmailField(required=True)
 
@@ -17,3 +16,7 @@ class NewUserForm(UserCreationForm):
 		if commit:
 			user.save()
 		return user
+
+# class PDFUploadForm(forms.Form):
+#     title = forms.CharField(max_length=255)
+#     pdf = forms.FileField()
