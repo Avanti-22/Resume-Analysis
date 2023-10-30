@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content%}
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        {% if user.is_authenticated %}
+            <div class="user-info">
+                Welcome, {{ user.username }}
+            </div>
+            {% comment %} <div class="sidebar-header">
+                <h3>Your Website</h3>
+            </div> {% endcomment %}
+            <ul class="list-unstyled components">
+                <li>
+                    <p>Welcome, {{ user.username }}</p>
+                </li>
+                <li>
+                    <a href="/jobdescription.html">Link 1</a>
+                </li>
+                <li>
+                    <a href="/upload.html">Link 2</a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        {% endif %}
+    </nav>
+
+    <div id="content">
+        <!-- Page content goes here -->
+        {% comment %} {% block content %}{% endblock %} {% endcomment %}
+    </div>
+
+{% endblock content%}

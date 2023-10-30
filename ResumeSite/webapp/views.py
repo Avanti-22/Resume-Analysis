@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout, login
 from datetime import datetime
 from django.contrib import messages
-from webapp.models import Contact
-from webapp.models import Resumeform
+from webapp.models import Contact, Resumeform, JobDescription, ResumeData
 import os
 # from .forms import PDFUploadForm
 
@@ -100,7 +99,7 @@ def upload(request):
             resumeform.save()
 
             messages.success(request, "Your form has been submitted.")
-            return redirect('matched_percent')  # Redirect to a success page
+            return render(request, 'jobdescription.html')  # Redirect to a success page
     else:
         # Handle GET request or render the initial form
         return render(request, 'upload.html')
@@ -145,6 +144,27 @@ def userreg(request):
 
     return render(request, 'register.html')
 
+def jd(request):
+    return render(request,'jobdescription.html')
+
+def resume_matching(request, resume_id, job_id):
+    resume = ResumeData.objects.get(id=resume_id)
+    job_description = JobDescription.objects.get(id=job_id)
+
+    # Implement your match percent calculation logic here
+    # For simplicity, we'll assume a basic example here
+    match_percent = calculate_match_percent(resume.content, job_description.content)
+
+    return render(request, 'matching_app/resume_matching.html', {'resume': resume, 'job_description': job_description, 'match_percent': match_percent})
+
+def calculate_match_percent(resume_content, job_description_content):
+    # Implement your match percent calculation logic here
+    # This is a simplified example
+    return 75.0  # For example, 75% match
+
+def resume_ranking(request):
+    resumes = ResumeData.objects.order_by('ranking')
+    return render(request, 'ranking_app/resume_ranking.html', {'resumes': resumes})
 
 # def upload_pdf(request):
 #     if request.method == 'POST':
