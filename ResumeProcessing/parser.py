@@ -474,7 +474,7 @@ else:
     ws["D1"] = 'Name'
     ws["E1"] = 'Matched'
     df = pd.DataFrame.from_dict([resume_data])
-    
+  
       
 for index, row in df.iterrows():
     ws.append(row.tolist())
