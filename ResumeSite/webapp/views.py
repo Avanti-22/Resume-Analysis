@@ -6,6 +6,8 @@ from datetime import datetime
 from django.contrib import messages
 from webapp.models import Contact, Resumeform, JobDescription, ResumeData
 import os
+from openpyxl import load_workbook
+from .models import Details
 # from .forms import PDFUploadForm
 
 # Create your views here.
@@ -166,6 +168,23 @@ def resume_ranking(request):
     resumes = ResumeData.objects.order_by('ranking')
     return render(request, 'ranking_app/resume_ranking.html', {'resumes': resumes})
 
+def import_from_excel(request):
+    if request.method == 'POST':
+        excel_file = request.FILES[r"ResumeProcessing\Extracted Data\Extracted.xlsx"]
+        wb = load_workbook(excel_file)
+        ws = wb.active
+
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            name, email, phone_number, skills = row
+            Details.objects.create(name=name, email=email, phone_number=phone_number, skills=skills)
+
+        return render(request, 'import_success.html')
+
+    return render(request, 'import_form.html')
+
+def display_data(request):
+    data = Details.objects.all()
+    return render(request, 'display_data.html', {'data': data})
 # def upload_pdf(request):
 #     if request.method == 'POST':
 #         form = PDFUploadForm(request.POST, request.FILES)

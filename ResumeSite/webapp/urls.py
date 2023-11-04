@@ -4,6 +4,7 @@ from . import views
 # from .views import upload_pdf
 from django.conf.urls.static import static
 from django.conf import settings
+from .views import import_from_excel
 
 # pass for avanti1 is Pass@123
 urlpatterns = [
@@ -24,6 +25,8 @@ urlpatterns = [
     # matching_app/urls.py
     path('resume_matching/<int:resume_id>/<int:job_id>/', views.resume_matching, name='resume_matching'),
     path('resume_ranking/', views.resume_ranking, name='resume_ranking'),
+    path('import/', import_from_excel, name='import_from_excel'),
+    path('display_data/', views.display_data, name='display_data'),
 
     # path('upload/', upload_pdf, name='upload_pdf'),
 ]

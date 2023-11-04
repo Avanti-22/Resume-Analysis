@@ -35,6 +35,12 @@ class Resumeform(models.Model):
     Name=models.CharField(max_length=122)
     Email=models.CharField(max_length=122)
     Resumefile = models.FileField(upload_to='pdfs/')
+
+class Details(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=20)
+    skills = models.CharField(max_length=200)   
     
     def __str__(self):
         return self.Name 
