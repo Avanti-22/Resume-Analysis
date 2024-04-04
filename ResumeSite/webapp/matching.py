@@ -31,7 +31,7 @@ from webapp.models import JobDescription, Resumeform
 from openpyxl import Workbook
 from datetime import datetime
 import pandas as pd
-
+from math import sqrt
 # from constants import STOPWORDS
 warnings.filterwarnings('ignore')
 filtered_data=[]
@@ -408,7 +408,36 @@ def match_skills(skills,required):
     print("Matched skills are: ",matched)
     res = len(set(required) and set(matched)) / float(len(set(required) or set(matched))) * 100
     print("The percentage of skills matched is: ",res)
-    return res
+
+
+
+    def dot_product(vec1, vec2):
+        return sum(x * y for x, y in zip(vec1, vec2))
+
+    def vector_length(vec):
+        return sqrt(sum(x * x for x in vec))
+
+    def cosine_similarity(vec1, vec2):
+        if vector_length(vec1) == 0 or vector_length(vec2) == 0:
+            return 0.0
+        return dot_product(vec1, vec2) / (vector_length(vec1) * vector_length(vec2))
+    
+    lower_skill=[]
+    for skill in skills:
+        lower_skill.append(skill.lower())
+# Example usage:
+    required_skills = required
+    candidate_skills = lower_skill
+
+# Convert skills to binary vectors
+    required_skills_vector = [1 if skill in required_skills else 0 for skill in required_skills]
+    candidate_skills_vector = [1 if skill in candidate_skills else 0 for skill in required_skills]
+
+    similarity_percentage = cosine_similarity(required_skills_vector, candidate_skills_vector) * 100
+    print("Candidate's skill fit percentage (using cosine similarity):", similarity_percentage)
+    print(required_skills)
+    print(candidate_skills)
+    return similarity_percentage
 
 def extract_education(nlp_text):
     '''
