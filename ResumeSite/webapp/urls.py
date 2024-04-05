@@ -22,7 +22,6 @@ urlpatterns = [
     path('req/',views.req,name="req"),
     path('register/',views.userreg,name="userreg"),
     path('logout/',views.userlogout,name="logout"),
-    # matching_app/urls.py
     path('resume_ranking/', views.resume_ranking, name='resume_ranking'),
     path('job/<int:job_id>/', views.resume_matching, name='resume_matching')
 
