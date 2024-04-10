@@ -55,7 +55,7 @@ def userreg(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         cpassword = request.POST.get('cpassword')
-        print(email, username, password, cpassword)
+        # print(email, username, password, cpassword)
         if password == cpassword:
             if User.objects.filter(username=username).exists():
                 messages.info(
@@ -82,7 +82,7 @@ def userlogin(request):
         username=request.POST.get('username')
         password=request.POST.get('password')
         #validate the user
-        # print(username,password)
+        # # print(username,password)
 
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -118,11 +118,11 @@ def upload(request):
             resumeform = Resumeform(R_Name=name, R_Email=email, Resumefile=os.path.join(upload_folder, resumefile.name))
             resumeform.save()
             resume_id = resumeform.Resume_No
-            print(resume_id)
+            # print(resume_id)
             request.session['resume_id'] = resume_id
             messages.success(request, "Your form has been submitted.")
             jobs = JobDescription.objects.all()
-            print(jobs)# Assuming Job is your model containing job details
+            # print(jobs)# Assuming Job is your model containing job details
         return render(request, 'jd_for_matching.html', {'jobs': jobs})  # Redirect to a success page
     else:
         # Handle GET request or render the initial form
@@ -132,12 +132,12 @@ def upload(request):
 
 def jd_for_matching(request):
     jobs = JobDescription.objects.all()
-    print(jobs)# Assuming Job is your model containing job details
+    # print(jobs)# Assuming Job is your model containing job details
     return render(request, 'jd_for_matching.html', {'jobs': jobs})
 
 def resume_matching(request, job_id):
     resume_id = request.session.get('resume_id')
-    print(resume_id)
+    # print(resume_id)
     # Retrieve Resumeform and JobDescription objects
     resume = get_object_or_404(Resumeform, Resume_No=resume_id)
     job_description = get_object_or_404(JobDescription, Job_id=job_id)
@@ -217,7 +217,7 @@ def hrview(request):
         username=request.POST.get('username')
         password=request.POST.get('password')
         #validate the user
-        print(username,password)
+        # print(username,password)
 
         user = authenticate(username=username, password=password)
         if user is not None:
@@ -268,15 +268,12 @@ def hr_jd(request):
                 resumeform.save()
                 uploaded_resume_id = resumeform.Resume_No
                 uploaded_resume_ids.append(uploaded_resume_id)
-                print("resume id is:",uploaded_resume_id)
         
         request.session['uploaded_resume_ids'] = uploaded_resume_ids
-        print("resume ids (hr_jd)are:",uploaded_resume_ids)
         
         job_des = JobDescription(Title=job_title, Required_Skills=requirements)
         job_des.save()
         new_job_id = job_des.Job_id
-        print("new job id:",new_job_id)
         request.session['new_job_id'] = new_job_id
         job = get_object_or_404(JobDescription, Job_id=new_job_id)
         #matching function call
@@ -284,17 +281,99 @@ def hr_jd(request):
         
         messages.success(request, "Your Job Description has been added.")
         
-        
-        print("hr_jd exit")
         return render(request, 'after_new_jd.html', {'job': job})
     else:
         return render(request, 'hr_jd.html')
-    # Render the HTML template containing the form
-    # return render(request, 'hr_jd.html')
 
+def after_new_jd(request):
+    new_job_id= request.session.get('new_job_id')
+    uploaded_resume_ids= request.session.get('uploaded_resume_ids')
+    job = get_object_or_404(JobDescription, Job_id=new_job_id)
+    # # print(job)
+    matching_uploaded_with_new_jd(new_job_id, uploaded_resume_ids)
+    return render(request, 'after_new_jd.html', {'job': job})
+    
+def jd_for_ranking(request):
+    jobs = JobDescription.objects.all()
+    # print(jobs)# Assuming Job is your model containing job details
+    return render(request, 'jd_for_ranking.html', {'jobs': jobs})
+
+def batch_resume_ranking(request, job_id):
+    resume_ids= request.session.get('uploaded_resume_ids')
+    matching_uploaded_with_new_jd(job_id, resume_ids)
+    # print("resume ids are:",resume_ids)
+    job= get_object_or_404(JobDescription, Job_id=job_id)
+    # print(job)
+    resumedata_objects = ResumeData.objects.filter(Resume_id__in=resume_ids)
+    
+    matched_data = (
+        Matched.objects
+        .filter(Job_id=job_id, Resume_id__in=resume_ids)
+        .annotate(
+            percent_matched=F('Percent_matched'),
+            name=F('Name'),  # Access name from related Resumeform
+            email=F('Email'),
+            resume_id=F('Resume_id'),  # Access Resume_id from Matched model
+            extracted_skills=F('Extracted_skills')
+        )
+        .values('percent_matched', 'name', 'email', 'resume_id', 'extracted_skills')
+        .order_by('-percent_matched')
+    )
+    # print(matched_data)
+    # Convert the queryset to a list of dictionaries
+    matched_list = list(matched_data)
+    # return matched_data
+    # Render template with ranked resumes
+    return render(request, 'resume_ranking.html', {'resumes': matched_data, 'job': job})
+
+def resume_ranking(request, job_id):
+    
+    job= get_object_or_404(JobDescription, Job_id=job_id)
+    # print(job)
+    # Filter Matched records for the given job_id and annotate required fields
+    matched_data = (
+        Matched.objects
+        .filter(Job_id=job_id)
+        .annotate(
+            percent_matched=F('Percent_matched'),
+            name=F('Resume__R_Name'),  # Access name from related Resumeform
+            email=F('Email'),
+            mobile=F('Mobile_No'),
+            resume_id=F('Resume_id'),  # Access Resume_id from Matched model
+            extracted_skills=F('Extracted_skills')
+        )
+        .values('percent_matched', 'name', 'email', 'mobile', 'resume_id', 'extracted_skills')
+        .order_by('-percent_matched')
+    )
+    # print(matched_data)
+    # Convert the queryset to a list of dictionaries
+    matched_list = list(matched_data)
+    # return matched_data
+    # Render template with ranked resumes
+    return render(request, 'resume_ranking.html', {'resumes': matched_data, 'job': job})
+
+def import_from_excel(request):
+    if request.method == 'POST':
+        excel_file = request.FILES[r"ResumeProcessing\Extracted Data\Extracted.xlsx"]
+        wb = load_workbook(excel_file)
+        ws = wb.active
+
+        for row in ws.iter_rows(min_row=2, values_only=True):
+            name, email, phone_number, skills = row
+            Details.objects.create(name=name, email=email, phone_number=phone_number, skills=skills)
+
+        return render(request, 'import_success.html')
+
+    return render(request, 'import_form.html')
+
+def display_data(request):
+    data = Details.objects.all()
+    return render(request, 'display_data.html', {'data': data})
+
+
+# ----------------------------matching functions -------------------------------
 def matching_with_new_jd(job_id):
     job = get_object_or_404(JobDescription, Job_id=job_id)
-    print(job)# Assuming Job is your model containing job details
     # Retrieve all ResumeData objects
     resumedata_objects = ResumeData.objects.all()
     required_skills = job.Required_Skills
@@ -329,17 +408,13 @@ def matching_with_new_jd(job_id):
 
 def matching_uploaded_with_new_jd(job_id,uploaded_resume_ids):
     job = get_object_or_404(JobDescription, Job_id=job_id)
-    print(job)# Assuming Job is your model containing job details
     required_skills = job.Required_Skills
-    print("\nrqd in after:",required_skills)
     
     uploaded_resumes = Resumeform.objects.filter(Resume_No__in=uploaded_resume_ids)
-    print("\nuploaded resumes: ", uploaded_resumes)
     
     for uploaded_resume in uploaded_resumes:
         uploaded_resume_id= uploaded_resume.Resume_No
         resume_content = fetch_data(uploaded_resume_id, job_id)
-        print("\nuploaded resume content: ",resume_content)
         # Extract data from fetch_data result
         email = resume_content[1]
         mobile_number = resume_content[2]
@@ -354,9 +429,7 @@ def matching_uploaded_with_new_jd(job_id,uploaded_resume_ids):
             Education=education,
             Skills=skills
         )
-        # resume_data.save()
-        # Calculate match percentage using match_skills function
-        # match_percent = round(match_skills(required_skills, skills), 2)
+        
         match_result = match_skills(required_skills, skills)
         matched_skills = match_result[1]
         # Round match percentage to two decimal places
@@ -372,137 +445,3 @@ def matching_uploaded_with_new_jd(job_id,uploaded_resume_ids):
                     Email=email,
                     Mobile_No=mobile_number,
                     )
-
-def after_new_jd(request):
-    new_job_id= request.session.get('new_job_id')
-    uploaded_resume_ids= request.session.get('uploaded_resume_ids')
-    job = get_object_or_404(JobDescription, Job_id=new_job_id)
-    print(job)
-    matching_uploaded_with_new_jd(new_job_id, uploaded_resume_ids)
-    return render(request, 'after_new_jd.html', {'job': job})
-    
-def jd_for_ranking(request):
-    jobs = JobDescription.objects.all()
-    print(jobs)# Assuming Job is your model containing job details
-    return render(request, 'jd_for_ranking.html', {'jobs': jobs})
-
-def batch_resume_ranking(request, job_id):
-    resume_ids= request.session.get('uploaded_resume_ids')
-    matching_uploaded_with_new_jd(job_id, resume_ids)
-    print("resume ids are:",resume_ids)
-    job= get_object_or_404(JobDescription, Job_id=job_id)
-    print(job)
-    resumedata_objects = ResumeData.objects.filter(Resume_id__in=resume_ids)
-    print("resume ids in batch_resume are:",resumedata_objects)
-    # required_skills = job.Required_Skills
-    # # Process each ResumeData object to match skills with the new JobDescription
-    # for resume_data in resumedata_objects:
-    #             # resume_data = ResumeData.objects.get(Resume_id=resume_id)
-
-    #             # If ResumeData exists, retrieve relevant data
-    #             email = resume_data.Email
-    #             mobile_number = resume_data.Mobile_No
-    #             education = resume_data.Education
-    #             skills = resume_data.Skills
-    #             resume_id = resume_data.Resume_id
-    #             # Calculate match percentage using match_skills function
-    #             match_percent = match_skills(required_skills, skills)
-    #             # Round match percentage to two decimal places
-    #             match_percent = round(match_percent, 2)
-
-    #             # Create Matched object to store matching details
-    #             batch_matched_data = Matched.objects.create(
-    #                 Extracted_skills=skills,
-    #                 Required_skills=required_skills,
-    #                 Matched_skills=skills,
-    #                 Percent_matched=match_percent,
-    #                 Resume_id=resume_id,                
-    #                 Job_id=job_id,
-    #                 )
-    #             batch_matched_data.save()
-    # Filter Matched records for the given job_id and annotate required fields
-    matched_data = (
-        Matched.objects
-        .filter(Job_id=job_id, Resume_id__in=resume_ids)
-        .annotate(
-            percent_matched=F('Percent_matched'),
-            name=F('Name'),  # Access name from related Resumeform
-            email=F('Email'),
-            resume_id=F('Resume_id'),  # Access Resume_id from Matched model
-            extracted_skills=F('Extracted_skills')
-        )
-        .values('percent_matched', 'name', 'email', 'resume_id', 'extracted_skills')
-        .order_by('-percent_matched')
-    )
-    print(matched_data)
-    # Convert the queryset to a list of dictionaries
-    matched_list = list(matched_data)
-    # return matched_data
-    # Render template with ranked resumes
-    return render(request, 'resume_ranking.html', {'resumes': matched_data, 'job': job})
-
-def resume_ranking(request, job_id):
-    
-    job= get_object_or_404(JobDescription, Job_id=job_id)
-    print(job)
-    # Filter Matched records for the given job_id and annotate required fields
-    matched_data = (
-        Matched.objects
-        .filter(Job_id=job_id)
-        .annotate(
-            percent_matched=F('Percent_matched'),
-            name=F('Resume__R_Name'),  # Access name from related Resumeform
-            email=F('Email'),
-            mobile=F('Mobile_No'),
-            resume_id=F('Resume_id'),  # Access Resume_id from Matched model
-            extracted_skills=F('Extracted_skills')
-        )
-        .values('percent_matched', 'name', 'email', 'mobile', 'resume_id', 'extracted_skills')
-        .order_by('-percent_matched')
-    )
-    print(matched_data)
-    # Convert the queryset to a list of dictionaries
-    matched_list = list(matched_data)
-    # return matched_data
-    # Render template with ranked resumes
-    return render(request, 'resume_ranking.html', {'resumes': matched_data, 'job': job})
-
-
-def import_from_excel(request):
-    if request.method == 'POST':
-        excel_file = request.FILES[r"ResumeProcessing\Extracted Data\Extracted.xlsx"]
-        wb = load_workbook(excel_file)
-        ws = wb.active
-
-        for row in ws.iter_rows(min_row=2, values_only=True):
-            name, email, phone_number, skills = row
-            Details.objects.create(name=name, email=email, phone_number=phone_number, skills=skills)
-
-        return render(request, 'import_success.html')
-
-    return render(request, 'import_form.html')
-
-def display_data(request):
-    data = Details.objects.all()
-    return render(request, 'display_data.html', {'data': data})
-# def upload_pdf(request):
-#     if request.method == 'POST':
-#         form = PDFUploadForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             pdf_file = form.save()
-#             return redirect('success_url')  # Redirect to a success page
-
-#     else:
-#         form = PDFUploadForm()
-
-#     return render(request, 'upload_pdf.html', {'form': form})
-
-# def registerView(request):
-#     if request.method == "POST":
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('login_url')
-#     else:
-#         form = UserCreationForm()
-#     return render(request,'registration/register.html',{'form':form})
