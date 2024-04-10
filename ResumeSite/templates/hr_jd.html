@@ -2,19 +2,20 @@
 {% block content%}
 
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>upload</title>
+    <title>Add Job New Description</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="">
+    <style>
+    .form-group{
+        padding-top: 10px;
+        padding-bottom: 15px;
+    } </style>
 </head>
 
 <section>
@@ -22,23 +23,20 @@
         <div class="row d-flex justify-content-center align-items-center py-5">
             <div class="col-8 justify-content-center align-items-center">
                 <div class="card justify-content-center align-items-center" style="border-radius: 1rem; background-color: #C7C5C0; border-radius: 1rem;">
-                    {% comment %} <div class="col-md-6 col-lg-5 d-none d-md-block">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                            width="500" height="800" alt="login form" class="img-fluid"
-                            style="border-radius: 1rem 0 0 1rem;" />
-                    </div> {% endcomment %}
+                        <H1 class="py-3">Add a New Job Description</H1>
                     <div class="col-md-6 col-lg-10 d-flex align-items-center">
                     
                         <div class="card-body p-4 p-lg-5 text-black">
 
-                            <form action="#" method="post" enctype="multipart/form-data">
+                            <form action="/hr_jd/" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label for="job_title">Job Title</label>
                                         <input type="text" class="form-control" id="job_title" name="job_title"
                                             placeholder="Enter the job title">
                                     </div>
-                                    <div class="form-group">
+                                    {% comment %} <div class="form-group">
                                         <label for="department">Department</label>
                                         <select class="form-control" id="department" name="department">
                                             <option value="engineering">Engineering</option>
@@ -46,12 +44,12 @@
                                             <option value="marketing">Marketing</option>
                                             <option value="human_resources">Human Resources</option>
                                         </select>
-                                    </div>
-                                    <div class="form-group">
+                                    </div> {% endcomment %}
+                                    {% comment %} <div class="form-group">
                                         <label for="location">Location</label>
                                         <input type="text" class="form-control" id="location" name="location"
                                             placeholder="Enter the job location">
-                                    </div>
+                                    </div> {% endcomment %}
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
@@ -60,12 +58,18 @@
                                             rows="5"></textarea>
                                     </div>
                                     <div class="form-group">
-                                        <label for="requirements">Requirements</label>
+                                        <label for="requirements">Skills Required</label>
                                         <textarea class="form-control" id="requirements" name="requirements"
                                             rows="5"></textarea>
                                     </div>
                                 </div>
+                                <br>
+                                <h3>Want to rank your own list of resumes!</h3>
                                 <div class="form-group">
+                                    <input type="file" class="custom-file-input" id="files" name="files" multiple>
+                                    <label class="custom-file-label p-2" for="files">Choose files</label>
+                                </div>
+                                {% comment %} <div class="form-group">
                                     <label for="skillset">Fields to be extracted</label>
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="skill1" name="skillset[]"
@@ -115,14 +119,13 @@
                                             value="more_than_three_years">
                                         <label class="form-check-label" for="experience3">More than three years</label>
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
 
                                 <button type="submit" class="btn btn-primary py-2">Submit</button>
                             </form>
 
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

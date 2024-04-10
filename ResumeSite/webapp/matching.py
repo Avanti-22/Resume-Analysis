@@ -42,8 +42,9 @@ resume_data={}
 def fetch_data(resume_id, job_id):
     
     # Retrieve the resume object using the ID
-    resume = get_object_or_404(Resumeform, id=resume_id)
-    required = get_object_or_404(JobDescription, id=job_id)
+    resume = get_object_or_404(Resumeform, Resume_No=resume_id)
+    job = get_object_or_404(JobDescription, Job_id=job_id)
+    
     resume_file = resume.Resumefile
     Text=extract_text(resume_file)
 
@@ -61,10 +62,10 @@ def fetch_data(resume_id, job_id):
 
     filtered_sentence = [w for w in word_tokens if not w in stop_words]
     filtered_data = ' '.join(filtered_sentence)
-    print(filtered_data)
+    # print(filtered_data)
 
     # Extract Email
-    print("E-mail: ", extract_email(filtered_data))
+    # print("E-mail: ", extract_email(filtered_data))
     resume_data[titles[1]] = extract_email(filtered_data)
 
     # Stemming or Lemmatization
@@ -73,45 +74,47 @@ def fetch_data(resume_id, job_id):
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(filtered_data)
     lemmatized_sentence = " ".join([token.lemma_ for token in doc])
-    print(lemmatized_sentence)
+    # print(lemmatized_sentence)
 
     # Extract Name
     from spacy.matcher import Matcher
     new_matcher = Matcher(nlp.vocab)
     new_nlp = nlp(filtered_data)
-    print(extract_name(new_nlp, new_matcher))
+    # print(extract_name(new_nlp, new_matcher))
 
     # Extract Mobile Number
-    print("Mobile No.: ", extract_mobile_number(filtered_data))
+    # print("Mobile No.: ", extract_mobile_number(filtered_data))
     resume_data[titles[2]] = extract_mobile_number(filtered_data)
 
+    # Extract Education
+    Education_Qualification = extract_education(filteredtxt)
+    # print("Education_Qualification: ", Education_Qualification)
+    resume_data[titles[3]] = list_to_string(Education_Qualification)
+    
     # Extract Skills
     noun_chunks = []
     extracted_skills=[]
     new_nlp = nlp(filtered_data)
     
     extracted_skills = extract_skills(new_nlp, noun_chunks)
-    print(extracted_skills)
-    resume_data[titles[5]] = list_to_string(extracted_skills)
+    # print(extracted_skills)
+    resume_data[titles[4]] = list_to_string(extracted_skills)
 
     # Convert the list to a single string
     converted_data = list_to_string(extracted_skills)
-    print("\nfinal skills extracted in list are:",converted_data)
+    # print("\nfinal skills extracted in list are:",converted_data)
     # Create a new Excel sheet with the converted data
     create_excel_sheet([converted_data])
        
-    file='required.csv'
-    print("Current Working Directory:", os.getcwd())
+    
     # tokens = [token.text for token in nlp_text if not token.is_stop]
-    data = pd.read_csv(os.path.join(os.path.dirname(__file__), file)) 
-    required = list(data.columns.values)
-    match_percent = match_skills(extracted_skills,required)
+    
+    required = job.Required_Skills
+    match_percent = match_skills(converted_data,required)
     print("Match Percentage:", match_percent)
 
-    # Extract Education
-    print("Education Qualification: ", extract_education(Text))
-
-    return match_percent, resume_data[titles[1]], resume_data[titles[2]],  resume_data[titles[5]]
+    
+    return match_percent, resume_data[titles[1]], resume_data[titles[2]], resume_data[titles[3]],  resume_data[titles[4]],
 
 #all the functions to be called
 #pdf to text
@@ -383,9 +386,11 @@ def create_excel_sheet(data):
     else:
         # Create a new sheet with the timestamp as the name
         ws = wb.create_sheet(title=timestamp, index=0)
+        ws["E1"] = 'Name'
         ws["A1"] = 'Email'
         ws["B1"] = 'Mobile No.'
-        ws["C1"] = 'Skills'
+        ws["C1"] = 'Eduaction'
+        ws["D1"] = 'Skills'
         df = pd.DataFrame.from_dict([resume_data])
     
       
@@ -398,19 +403,17 @@ def create_excel_sheet(data):
 # Matching the extracted skills with our requirements
 def match_skills(skills,required):
 
-    print("Skills in Resume: ",skills)
-    print("Required skills are: ",required)
-    matched = []
-    # check for one-grams
-    for skill in skills:
-        if skill.lower() in required:
-            matched.append(skill)
-    print("Matched skills are: ",matched)
-    res = len(set(required) and set(matched)) / float(len(set(required) or set(matched))) * 100
-    print("The percentage of skills matched is: ",res)
-
-
-
+    # print("\nSkills in Resume: ",skills)
+    # print("\nRequired skills are: ",required)
+    
+    required_skills_list = [skill.strip() for skill in required.split(',')]
+    # print("\ntest rqd",required_skills_list)
+    print(required_skills_list)
+    
+    candi_skills_list = [skill.strip() for skill in skills.split(',')]
+    # print("\ntest rqd",candi_skills_list)
+    print(candi_skills_list)
+    
     def dot_product(vec1, vec2):
         return sum(x * y for x, y in zip(vec1, vec2))
 
@@ -421,57 +424,53 @@ def match_skills(skills,required):
         if vector_length(vec1) == 0 or vector_length(vec2) == 0:
             return 0.0
         return dot_product(vec1, vec2) / (vector_length(vec1) * vector_length(vec2))
-    
-    lower_skill=[]
-    for skill in skills:
+      
+    lower_skill=[] 
+    for skill in candi_skills_list:
         lower_skill.append(skill.lower())
+        
+    lower_req=[]
+    for skill in required_skills_list:
+        lower_req.append(skill.lower())
 # Example usage:
-    required_skills = required
+    required_skills = lower_req
     candidate_skills = lower_skill
+    # print("\nrequired:",required_skills)
+    # print("\nskills:",candidate_skills)
 
 # Convert skills to binary vectors
     required_skills_vector = [1 if skill in required_skills else 0 for skill in required_skills]
     candidate_skills_vector = [1 if skill in candidate_skills else 0 for skill in required_skills]
-
+    matching=[]
+    for skill in required_skills:
+        if skill in candidate_skills:
+            matching.append(skill)
+    matched_skills= list_to_string(matching)
+    # print("\nmatched skills are:",matching)        
     similarity_percentage = cosine_similarity(required_skills_vector, candidate_skills_vector) * 100
-    print("Candidate's skill fit percentage (using cosine similarity):", similarity_percentage)
-    print(required_skills)
-    print(candidate_skills)
-    return similarity_percentage
+    # print("\nCandidate's skill fit percentage (using cosine similarity):", similarity_percentage)
+    return similarity_percentage, matched_skills
+
 
 def extract_education(nlp_text):
-    '''
-    Helper function to extract education from spacy nlp text
+    patterns = [
+        r'\b(?:BE|B\.E\.?|B\.S\.?|Bachelor of Engineering|Bachelor of Science)\b',
+        r'\b(?:ME|M\.E\.?|M\.S\.?|Master of Engineering|Master of Science)\b',
+        r'\b(?:BTECH|B\.TECH\.?|Bachelor of Technology)\b',
+        r'\b(?:MTECH|M\.TECH\.?|Master of Technology)\b',
+        r'\b(?:X|XII)\b',
+        r'\b(?:Diploma)\b',
+    ]
 
-    :param nlp_text: object of `spacy.tokens.doc.Doc`
-    :return: tuple of education degree and year if year if found else only returns education degree
-    '''
-    EDUCATION         = [
-                    'BE','B.E.', 'B.E', 'BS', 'B.S', 'ME', 'M.E', 'M.E.', 'MS', 'M.S', 'BTECH', 'MTECH', 
-                    'SSC', 'HSC', 'CBSE', 'ICSE', 'X', 'XII'
-                    ]
-    
-    STOPWORDS         = set(stopwords.words('english'))
-    
-    YEAR              = r'(((20|19)(\d{2})))'
-    
-    edu = {}
-    # Extract education degree
-    for index, text in enumerate(nlp_text):
-        for tex in text.split():
-            # tex = re.sub(r'[?|$|.|!|,]', r'', tex)
-            if tex.upper() in EDUCATION:
-                edu[tex] = text + nlp_text[index + 1]
+    qualifications = []
 
-    # Extract year
-    education = []
-    for key in edu.keys():
-        year = re.search(re.compile(YEAR), edu[key])
-        if year:
-            education.append((key, ''.join(year.group(0))))
-        else:
-            education.append(key)
-    return education
+    # Iterate through patterns and search for complete matches in the resume text
+    for pattern in patterns:
+        matches = re.findall(pattern, nlp_text)
+        qualifications.extend(matches)
+
+    # Remove duplicates and return the list of qualifications
+    return list(set(qualifications))
 
 
 
