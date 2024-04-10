@@ -11,6 +11,16 @@ from .matching import fetch_data, match_skills
 from django.db.models import Avg
 from django.db.models import F, Value
 
+from .models import ResumeData,Matched
+from django.db import models
+from django.shortcuts import render
+import requests
+from openpyxl import load_workbook
+from bs4 import BeautifulSoup
+
+#from .models import Details
+
+from .matching import fetch_data
 
 # from .forms import PDFUploadForm
 
@@ -445,3 +455,21 @@ def matching_uploaded_with_new_jd(job_id,uploaded_resume_ids):
                     Email=email,
                     Mobile_No=mobile_number,
                     )
+        
+def remote_jobs_view(request):
+    url = 'https://remotive.com/api/remote-jobs'
+    response = requests.get(url)
+    data = response.json()
+    jobs = data.get('jobs', [])
+
+    # Remove HTML tags from job descriptions
+    for job in jobs:
+        html_content = job.get('description', '')
+        # Parse HTML content using BeautifulSoup
+        soup = BeautifulSoup(html_content, 'html.parser')
+        # Get text without HTML tags
+        text_without_html = soup.get_text(separator=' ')
+        # Update job description with text without HTML tags
+        job['description'] = text_without_html.strip()
+
+    return render(request, 'jobs.html', {'jobs': jobs})

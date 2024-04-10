@@ -5,7 +5,7 @@ from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 from .views import import_from_excel
-
+from .views import remote_jobs_view
 # pass for avanti1 is Pass@123
 urlpatterns = [
     
@@ -33,6 +33,13 @@ urlpatterns = [
     path('after_new_jd/',views.after_new_jd, name='after_new_jd'),
     path('batch_rjob/<int:job_id>/', views.batch_resume_ranking, name='batch_resume_ranking'),
     path('rjob/<int:job_id>/', views.resume_ranking, name='resume_ranking')
+    path('logout/',views.userlogout,name="logout"),
+    # matching_app/urls.py
+    path('resume_ranking/', views.resume_ranking, name='resume_ranking'),
+    path('job/<int:job_id>/', views.resume_matching, name='resume_matching'),
+    path('remote-jobs/', remote_jobs_view, name='remote_jobs'),
+
+    # path('upload/', upload_pdf, name='upload_pdf'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
