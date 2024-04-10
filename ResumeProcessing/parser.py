@@ -382,6 +382,31 @@ def match_skills(skills):
     print("Matched skills are: ",matched)
     res = len(set(required) and set(matched)) / float(len(set(required) or set(matched))) * 100
     print("The percentage of skills matched is: ",res)
+
+    from math import sqrt
+
+    def dot_product(vec1, vec2):
+        return sum(x * y for x, y in zip(vec1, vec2))
+
+    def vector_length(vec):
+        return sqrt(sum(x * x for x in vec))
+
+    def cosine_similarity(vec1, vec2):
+        if vector_length(vec1) == 0 or vector_length(vec2) == 0:
+            return 0.0
+        return dot_product(vec1, vec2) / (vector_length(vec1) * vector_length(vec2))
+
+# Example usage:
+    required_skills = ["Python", "Java", "SQL", "Machine Learning", "Communication"]
+    candidate_skills = ["Python", "SQL", "Data Analysis"]
+
+# Convert skills to binary vectors
+    required_skills_vector = [1 if skill in required_skills else 0 for skill in required_skills]
+    candidate_skills_vector = [1 if skill in candidate_skills else 0 for skill in required_skills]
+
+    similarity_percentage = cosine_similarity(required_skills_vector, candidate_skills_vector) * 100
+    print("Candidate's skill fit percentage (using cosine similarity):", similarity_percentage)
+
     return res
 
 
@@ -398,7 +423,7 @@ def extract_education(nlp_text):
     '''
     EDUCATION         = [
                     'CBSE', 'ICSE', 'X', 'XII', 'BE', 'B.E.', 'B.E', 'BS', 'B.S', 'ME', 'M.E', 'M.E.', 'MS', 'M.S', 'BTECH', 'MTECH', 
-                    'SSC', 'HSC'
+                    'SSC', 'HSC','B.Tech','BTech'
                     ]
     
     STOPWORDS         = set(stopwords.words('english'))

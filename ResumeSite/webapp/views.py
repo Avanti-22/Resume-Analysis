@@ -6,6 +6,15 @@ from datetime import datetime
 from django.contrib import messages
 from webapp.models import Contact, Resumeform, JobDescription, ResumeData
 import os
+from .models import ResumeData,Matched
+from django.db import models
+from django.shortcuts import render
+import requests
+from openpyxl import load_workbook
+from bs4 import BeautifulSoup
+
+#from .models import Details
+
 from .matching import fetch_data
 
 # from .forms import PDFUploadForm
@@ -171,14 +180,18 @@ def resume_matching(request, job_id):
         Skills=skills,
         # Add other fields as needed
     )
-
+    print("matched percent is",resume_content[0])
     match_percent =round(resume_content[0], 2)  # Assuming match_percent is at index 0
-
+    
     return render(request, 'matching.html', {'resume': resume,'mobile_number':mobile_number,'email':email,'skills':skills,'job_description': job_description, 'match_percent': match_percent})
 
 def resume_ranking(request):
-    # resumes = ResumeData.objects.order_by('ranking')
-    return render(request, 'ranking_app/resume_ranking.html', {'resumes': resumes})
+    # Calculate match percentage for each resume and order them by match percentage
+    resumes = ResumeData.objects.all()
+    ranked_resumes = sorted(resumes, key=lambda resume: resume.matched_set.all().aggregate(avg_match=models.Avg('Percent_matched'))['avg_match'] or 0, reverse=True)
+
+    # Render template with ranked resumes
+    return render(request, 'resume_ranking.html', {'resumes': ranked_resumes})
 
 def import_from_excel(request):
     if request.method == 'POST':
@@ -197,6 +210,25 @@ def import_from_excel(request):
 def display_data(request):
     data = Details.objects.all()
     return render(request, 'display_data.html', {'data': data})
+
+def remote_jobs_view(request):
+    url = 'https://remotive.com/api/remote-jobs'
+    response = requests.get(url)
+    data = response.json()
+    jobs = data.get('jobs', [])
+
+    # Remove HTML tags from job descriptions
+    for job in jobs:
+        html_content = job.get('description', '')
+        # Parse HTML content using BeautifulSoup
+        soup = BeautifulSoup(html_content, 'html.parser')
+        # Get text without HTML tags
+        text_without_html = soup.get_text(separator=' ')
+        # Update job description with text without HTML tags
+        job['description'] = text_without_html.strip()
+
+    return render(request, 'jobs.html', {'jobs': jobs})
+
 # def upload_pdf(request):
 #     if request.method == 'POST':
 #         form = PDFUploadForm(request.POST, request.FILES)

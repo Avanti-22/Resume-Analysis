@@ -5,7 +5,7 @@ from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 from .views import import_from_excel
-
+from .views import remote_jobs_view
 # pass for avanti1 is Pass@123
 urlpatterns = [
     path("", views.home, name="home"),
@@ -24,7 +24,8 @@ urlpatterns = [
     path('logout/',views.userlogout,name="logout"),
     # matching_app/urls.py
     path('resume_ranking/', views.resume_ranking, name='resume_ranking'),
-    path('job/<int:job_id>/', views.resume_matching, name='resume_matching')
+    path('job/<int:job_id>/', views.resume_matching, name='resume_matching'),
+    path('remote-jobs/', remote_jobs_view, name='remote_jobs'),
 
     # path('upload/', upload_pdf, name='upload_pdf'),
 ]
