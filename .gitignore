@@ -14,3 +14,11 @@ cache/models--xlnet-base-cased/snapshots/ceaa69c7bc5e512b5007106a7ccbb7daf24b2c7
 *.xlsx
 ResumeSite/webapp/Extracted Data/Extracted.xlsx
 ResumeSite/db.sqlite3
+*.py
+/ResumeSite/webapp/migrations
+/ResumeSite/webapp/migrations
+ResumeSite/webapp/migrations/0002_rename_job_id_matched_job_and_more.py
+ResumeSite/db.sqlite3
+ResumeSite/db.sqlite3
+ResumeSite/db.sqlite3
+ResumeSite/db.sqlite3

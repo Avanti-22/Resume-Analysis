@@ -32,7 +32,7 @@ urlpatterns = [
     path('hr_jd/',views.hr_jd,name="hr_jd"),
     path('after_new_jd/',views.after_new_jd, name='after_new_jd'),
     path('batch_rjob/<int:job_id>/', views.batch_resume_ranking, name='batch_resume_ranking'),
-    path('rjob/<int:job_id>/', views.resume_ranking, name='resume_ranking')
+    path('rjob/<int:job_id>/', views.resume_ranking, name='resume_ranking'),
     path('logout/',views.userlogout,name="logout"),
     # matching_app/urls.py
     path('resume_ranking/', views.resume_ranking, name='resume_ranking'),
