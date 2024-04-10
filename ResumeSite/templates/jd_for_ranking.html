@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Descriptions</title>
+<!-- Add Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    /* Custom CSS styles can be added here */
+    .job-card {
+        margin: 10px;
+    }
+</style>
+</head>
+<div class="container justify-content-center">
+    <h1 class="h1 font-weight-bold text-center my-4" style="color: white;">Job Descriptions</h1>
+    <div class="row">
+        {% for job in jobs %}
+        <div class="col-md-4">
+            <div class="card job-card" style="background-color: #C7C5C0; border-radius: 1rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ job.Title }}</h5>
+                    <p class="card-text">{{ job.description }}</p>
+                    <a href="/rjob/{{ job.Job_id }}" class="btn" style="background-color: #94949C;">Rank Resumes for this Job Description</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Add Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock content %}

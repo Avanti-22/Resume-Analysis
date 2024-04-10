@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Home</title>
+        <title>Hr Dashboard</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
@@ -16,18 +16,18 @@
             <div class="col-sm-6 mb-3 mb-sm-0">
               <div class="card">
                 <div class="card-body" style="background-color: #C7C5C0;">
-                  <h5 class="card-title">Analyze Your Resume</h5>
-                  <p class="card-text">Are you looking for job? want to analyze and know the rank of your resume? Then click on Candidate login.</p>
-                  <a href="{% url "userview" %}" class="btn " style="background-color: #94949C;" >I am a Candidate!</a>
+                  <h5 class="card-title">Rank Resumes for existing Job Description</h5>
+                  <p class="card-text">Select from the existing Job Descriptions and respective Skill requirements to rank resumes.</p>
+                  <a href="{% url "jd_rank" %}" class="btn " style="background-color: #94949C;" >Click Here to Rank Resumes</a>
                 </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="card">
                 <div class="card-body" style="background-color: #C7C5C0;">
-                  <h5 class="card-title">Find Candidates for a Position</h5>
-                  <p class="card-text">Are you looking for suitable candidates for your job description? Click on HR login to find matching resumes with your requirements.</p>
-                  <a href="{% url "hrview" %}" class="btn " style="background-color: #94949C;">I am a Recruiter!</a>
+                  <h5 class="card-title">Add Your own Job Description</h5>
+                  <p class="card-text">Add your own Skill Requirements and get the ranks.</p>
+                  <a href="{% url "hr_jd" %}" class="btn " style="background-color: #94949C;">Click Here to Add Now!</a>
                 </div>
               </div>
             </div>

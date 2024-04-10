@@ -17,10 +17,7 @@
       background-position: center;
     }
   </style>
-  {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-  </svg> {% endcomment %}
+
 </head>
 
 <body>
@@ -30,7 +27,7 @@
     <script src="https://kit.fontawesome.com/2d991706ce.js" crossorigin="anonymous"></script>
 
   {% comment %} <h1>Hello, world!</h1> {% endcomment %}
-  <nav class="navbar navbar-expand-lg justify-content-between" style="background-color: #383838; ">
+  <nav class="navbar navbar-expand-lg justify-content-between fixed-top" style="background-color: #383838; ">
     <div class="container-fluid">
       <a class="navbar-brand" href="/home" style="color: white;">
         <img src="{% static 'images\logo.png' %}" alt="" width="30" height="24"
@@ -78,21 +75,29 @@
             
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;"><i class="fa-solid fa-user px-1"></i>{{user.username }}</a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a class="dropdown-item" href="{% url "jd" %}">job description</a></li>
+                    <li><a class="dropdown-item" href="{% url "upload" %}">Upload </a></li>
+                    <li><a class="dropdown-item" href="{% url "jd_match" %}">job descriptions</a></li>
                 {% comment %} <li><a class="dropdown-item" href="{% url "resume_matching" %}">Results</a></li> {% endcomment %}
+                    {%if user.is_superuser%}
+                    <li><a class="dropdown-item" href="{% url "hr_dash" %}">HR Dashboard</a></li>
+                    <li><a class="dropdown-item" href="{% url "jd_rank" %}">Rank Resumes</a></li>
+                    {% comment %} <li><a class="dropdown-item" href="{% url "jd_for_ranking" %}">Rank Resumes</a></li> {% endcomment %}
+                    {%endif%}
                     <li>
                       <hr class="dropdown-divider">
                     </li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                </ul>
+                
               {%endif%}
+              
             </li>
           </ul>
         </ul>
       </div>
     </div>
   </nav>
-  
+  <div style="margin-top: 70px;">
+  </div>
         {% if messages %}
         {% for message in messages %}
         <div class="alert alert-{{message.tags}} alert-dismissible fade show my-0 " role="alert">
@@ -107,13 +112,6 @@
 
         {% block content %}
         {% endblock content %}
-      {% comment %} </main>
-    </div>
-  </div> {% endcomment %}
-  {% comment %} <ul class="messages">
-    <li{% if message.tags %} class="" {% endif %}>
-      </li>
-  </ul> {% endcomment %}
 
 </body>
 
