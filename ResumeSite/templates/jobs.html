@@ -1,66 +1,76 @@
 {% extends 'base.html' %}
 {% block content %}
-  <style>
-    /* Custom CSS styles can be added here */
-    .job-card {
-      margin: 10px;
-      background-color: #C7C5C0;
-      border-radius: 1rem;
-      width: 500px; /* Increase card width */
-      height: fit-content; /* Allow card to grow based on content */
-    }
+<style>
+/* Add your custom CSS styles for job cards here */
+.job-card {
+  width: 100%;
+  margin: 10px 0; /* Add margin between horizontal cards */
+}
 
-    .card-title {
-      color: #333;
-      font-weight: bold;
-    }
+.card-body {
+  display: flex;
+  flex-direction: column;
+}
 
-    .card-text {
-      color: #555;
-      display: -webkit-box; /* Use -webkit-box for compatibility */
-      -webkit-line-clamp: 3; /* Truncate to 3 lines */
-      -webkit-box-orient: vertical; /* Stack text vertically */
-      overflow: hidden; /* Hide overflowing content */
-      transition: all 0.3s ease; /* Animate text reveal */
-    }
+.card-body p {
+  margin-bottom: 10px; /* Add space between paragraphs */
+}
 
-    .card-text.is-expanded {
-      -webkit-line-clamp: unset; /* Show full text on expand */
-    }
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3rem; /* Set maximum height for truncated text */
+  transition: max-height 0.3s ease; /* Add smooth transition for height change */
+}
 
-    .btn {
-      background-color: #94949C;
-      color: #fff;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-    }
+.expanded .description {
+  max-height: none; /* Remove max-height when expanded */
+}
+</style>
 
-    .btn:hover {
-      background-color: #777;
-    }
+<div class="container justify-content-center">
+  <h1 class="h1 font-weight-bold text-center my-4">Remotive Jobs</h1>
+  <div class="row">
+    {% for job in jobs %}
+      <div class="col-md-12">
+        <div class="card job-card" id="card-{{ forloop.counter }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ job.title }}</h5>
+            <p class="card-text description">{{ job.description }}</p>
+            <p><strong>Company:</strong> {{ job.company_name }}</p>
+            <p><strong>Category:</strong> {{ job.category }}</p>
+            <p><strong>Tags:</strong> {% for tag in job.tags %}<span>{{ tag }}</span>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <p><strong>Job Type:</strong> {{ job.job_type }}</p>
+            <p><strong>Publication Date:</strong> {{ job.publication_date }}</p>
+            <p><strong>Candidate Required Location:</strong> {{ job.candidate_required_location }}</p>
+            <p><strong>Salary:</strong> {{ job.salary }}</p>
+            <button class="btn read-more-btn" onclick="toggleDescription('card-{{ forloop.counter }}')">Read More</button>
+            <a href="{{ job.url }}" class="btn">View Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 
-    .read-more {
-      text-align: right;
-      margin-top: 5px;
-    }
-  </style>
-  <div class="container justify-content-center">
-    <h1 class="h1 font-weight-bold text-center my-4" style="color: white;">Remotive Jobs</h1>
-    <div class="row">
-      {% for job in jobs %}
-        <div class="col-md-4">
-          <div class="card job-card">
-            <div class="card-body">
-              <h5 class="card-title">{{ job.title }}</h5>
-              <p class="card-text">{{ job.description }}</p>
-              <p><strong>Company:</strong> {{ job.company_name }}</p>
-              <p><strong>Category:</strong> {{ job.category }}</p>
-              <p><strong>Tags:</strong> {% for tag in job.tags %}<span>{{ tag }}</span>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-              <p><strong>Job Type:</strong> {{ job.job_type }}</p>
-              <p><strong>Publication Date:</strong> {{ job.publication_date }}</p>
-              <p><strong>Candidate Required Location:</strong> {{ job.candidate_required_location }}</p>
-              <p><strong>Salary:</strong> {{ job.salary }}</p>
-              <div class="read-more">
-                <a href="{{ job.url }}" class="btn">View Details</a
+<script>
+function toggleDescription(cardId) {
+  var card = document.getElementById(cardId);
+  var desc = card.querySelector(".description");
+  var btnText = card.querySelector(".read-more-btn");
+
+  if (desc.classList.contains("expanded")) {
+    // Collapse the description
+    desc.classList.remove("expanded");
+    desc.style.maxHeight = "3rem"; // Truncate description to 3rem
+  } else {
+    // Expand the description
+    desc.classList.add("expanded");
+    desc.style.maxHeight = desc.scrollHeight + "px"; // Expand to full height
+  }
+
+  // Toggle button text based on description state
+  btnText.innerHTML = desc.classList.contains("expanded") ? "Read Less" : "Read More";
+}
+</script>
+{% endblock content %}
