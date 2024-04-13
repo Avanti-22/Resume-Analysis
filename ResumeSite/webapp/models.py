@@ -8,11 +8,18 @@ class ResumeData(models.Model):
     Skills = models.TextField(max_length=200)
     Education = models.TextField(max_length=200)
     Experience = models.TextField(max_length=200)
-
+def __str__(self):
+        return str(self.pk)
+    
+class Resumeform(models.Model):
+    Name=models.CharField(max_length=122)
+    Email=models.CharField(max_length=122)
+    Resumefile = models.FileField(upload_to='pdfs/',default='')
+    # ResumeId = models.DateTimeField()
 class Matched(models.Model):
     Resume = models.ForeignKey(ResumeData, on_delete=models.CASCADE)
     Extracted_skills = models.TextField()
-    Resuired_skills = models.TextField()
+    Required_skills = models.TextField()
     Matched_skills = models.TextField()
     Percent_matched = models.DecimalField(decimal_places=2,max_digits=3)
     
@@ -28,14 +35,9 @@ class Contact(models.Model):
     Message=models.TextField(max_length=300)
     Date=models.DateField()
 
-    def __str__(self):
-        return self.Name
+    # def __str__(self):
+    #     return self.Name
 
-class Resumeform(models.Model):
-    Name=models.CharField(max_length=122)
-    Email=models.CharField(max_length=122)
-    Resumefile = models.FileField(upload_to='pdfs/')
-    
     def __str__(self):
         return self.Name 
     # upload_date = models.DateTimeField(auto_now_add=True)

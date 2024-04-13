@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout, login
 from datetime import datetime
 from django.contrib import messages
-from webapp.models import Contact
-from webapp.models import Resumeform
+from webapp.models import Contact, Resumeform, JobDescription, ResumeData
 import os
+from .matching import fetch_data
+
 # from .forms import PDFUploadForm
 
 # Create your views here.
@@ -98,9 +99,10 @@ def upload(request):
             # Create and save the model instance
             resumeform = Resumeform(Name=name, Email=email, Resumefile=os.path.join(upload_folder, resumefile.name))
             resumeform.save()
-
+            resume_id = resumeform.id
+            request.session['resume_id'] = resume_id
             messages.success(request, "Your form has been submitted.")
-            return redirect('matched_percent')  # Redirect to a success page
+            return render(request, 'jobdescription.html')  # Redirect to a success page
     else:
         # Handle GET request or render the initial form
         return render(request, 'upload.html')
@@ -145,6 +147,38 @@ def userreg(request):
 
     return render(request, 'register.html')
 
+def jd(request):
+    
+    return render(request,'jobdescription.html')
+
+def resume_matching(request, job_id):
+    resume_id = request.session.get('resume_id')
+    resume = get_object_or_404(Resumeform, id=resume_id)
+    job_description = get_object_or_404(JobDescription, id=job_id)
+
+        # Assuming fetch_data returns a tuple
+    resume_content = fetch_data(resume_id, job_id)
+
+    # Accessing tuple elements directly
+    email = resume_content[1]  # Assuming email is at index 1
+    mobile_number = resume_content[2]  # Assuming mobile_number is at index 2
+    skills = resume_content[3]  # Assuming skills is at index 5
+
+    # Creating ResumeData object
+    resume_data = ResumeData.objects.create(
+        Email=email,
+        Mobile_No=mobile_number,
+        Skills=skills,
+        # Add other fields as needed
+    )
+
+    match_percent =round(resume_content[0], 2)  # Assuming match_percent is at index 0
+
+    return render(request, 'matching.html', {'resume': resume,'mobile_number':mobile_number,'email':email,'skills':skills,'job_description': job_description, 'match_percent': match_percent})
+
+def resume_ranking(request):
+    # resumes = ResumeData.objects.order_by('ranking')
+    return render(request, 'ranking_app/resume_ranking.html', {'resumes': resumes})
 
 # def upload_pdf(request):
 #     if request.method == 'POST':

@@ -29,7 +29,8 @@ from nltk.tokenize import word_tokenize
 # from constants import STOPWORDS
 warnings.filterwarnings('ignore')
 
-titles = ["Name", "Email", "Phone", "Education", "Experience", "Skills"]
+def perform_matching(resume_id, job_id):
+    titles = ["Name", "Email", "Phone", "Education", "Experience", "Skills"]
 resume_data={}
 
 resume_file=input('Enter resume: ')
@@ -1227,4 +1228,5 @@ pip install accelerate -U
 
 
 
+    return match_percent
 
