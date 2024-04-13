@@ -1,75 +1,90 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="about-section" style="background-color: #C7C5C0; text-align: center; padding: 50px; color: black;">
-    <div class="container">
-        <h1>About Us</h1>
-        <p>Welcome to HireBoost, where we simplify your job search with our Resume Analyzer!.</p>
+{%load static%}
+<div class="about-section" >
+    <div class="container-md">
+        <h2 style="text-align: center; color: white;">About Us</h2>
+        <div class="card" style="border-radius: 10px; background-color: #C7C5C0; color: black; padding:20px;">
+        
+        <p>Welcome to SkillScan, where we simplify your job search with our Resume Analyzer!</p>
         <p>What We Do:</p>
     
             <p> 1.Resume Analysis: We use advanced technology to analyze your resume and provide valuable feedback.</p>
             <p> 2.Personalized Tips: Receive tailored suggestions to improve your resume.</p>
             <p> 3.Career Support: We offer guidance to boost your job search success.</p>
         <p>Our team is dedicated to your success, and we're always improving our services to provide the best resume-building experience.</p>
+        </div>
     </div>
 </div>
 
-<h2 style="text-align: center; color: white;">Our Team</h2>
+<h2 style="text-align: center; color: white; padding-top: 30px;">Our Team</h2>
 
 <style>
-    .team-member-name {
+    .card {
         font-family: Times new roman, sans-serif;
+        display: flex;
+        justify-content: center; /* Aligns content horizontally in the center */
+        align-items: center;
+        border: none;
+        background-color: rgba(199, 197, 192, 0);
+    }
+    .rounded-img {
+        width: 250px; /* Adjust the width to your desired size */
+        height: 250px; /* Ensure the height matches the width */
+        border-radius: 50%; /* Create a circular border */
+        object-fit: cover; /* Ensure the image covers the entire circle */
+        
+    }
+    .info-container{
+        background-color: #C7C5C0;
     }
 </style>
 
-
-
-<div class="row" style="text-align: center;">
-    <div class="column" style="width: 25%;">
-        <div class="card" style="background-color: #C7C5C0;">
-            <img src="/w3images/team1.jpg" alt="Avanti" style="width:100%">
-            <div class="container">
-                <h2>Avanti  </h2>
+<div class="row" style="text-align: center; background-color: #C7C5C0; margin-left:30px; margin-right:30px; border-radius: 10px;">
+    <div class="col mx-2" style="margin-left: 30px;">
+        <div class="card" style=" padding:2px;">
+            <img src="/w3images/team1.jpg" alt="Avanti" class="rounded-img">
+            <div class="info-container">
+                <h5>Avanti  </h5>
                 <p class="title">Student</p>
-                <p>avanti@example.com</p>
-
-                <p><button class="button" style="color:#1a1919;">Contact</button></p>
+                <p>thaleavanti2002@gmail.com</p>
             </div>
         </div>
     </div>
 
-    <div class="column" style="width: 25%;">
-        <div class="card" style="background-color: #C7C5C0;">
-            <img src="https://media.licdn.com/dms/image/D4D03AQGafOCcyEECEg/profile-displayphoto-shrink_800_800/0/1697218485661?e=1702512000&v=beta&t=B2msoFjJ9zYV2g06YjzBy-7H4Nh3Qci1vJ6xKNOBFJM" alt="Mrunal" style="width:100%">
-            <div class="container">
-                <h2>Mrunal </h2>
+    <div class="col mx-2" style="margin-left: 30px;">
+        <div class="card" style="padding:2px;">
+            <img src="{% static 'images\mrunal.jpg' %}" alt="Mrunal"  class="rounded-img" >
+            <div class="info-container">
+                <h5>Mrunal </h5>
                 <p class="title">Student</p>
                 <p>mrunalkulkarni.2802@gmail.com</p>
-                <p><button class="button" style="color: #1a1919;">Contact</button></p>
+                {% comment %} <p><button class="button" style="color: #1a1919;">Contact</button></p> {% endcomment %}
             </div>
         </div>
     </div>
 
-    <div class="column" style="width: 25%;">
-        <div class="card" style="background-color: #C7C5C0;">
-            <img src="https://media.licdn.com/dms/image/D4D03AQF8Onzza74G2w/profile-displayphoto-shrink_200_200/0/1691484728905?e=1700092800&v=beta&t=5wd_0zIdHDyKle-ghQCWXEJiIfRUUQuWuEsL-xoB3Dg" alt="Pranjali" style="width:100%">
-            <div class="container">
-                <h2>Pranjali </h2>
+    <div class="col mx-2" style="">
+        <div class="card" style="padding:2px;">
+            <img src="https://media.licdn.com/dms/image/D4D03AQF8Onzza74G2w/profile-displayphoto-shrink_200_200/0/1691484728905?e=1700092800&v=beta&t=5wd_0zIdHDyKle-ghQCWXEJiIfRUUQuWuEsL-xoB3Dg" alt="Pranjali"  class="rounded-img">
+            <div class="info-container">
+                <h5>Pranjali </h5>
                 <p class="title">Student</p>
                 <p>pranjupolawar27@gmail.com</p>
-                <p><button class="button" style="color: #1a1919;">Contact</button></p>
+                {% comment %} <p><button class="button" style="color: #1a1919;">Contact</button></p> {% endcomment %}
             </div>
         </div>
     </div>
 
-    <div class="column" style="width: 25%;">
-        <div class="card" style="background-color: #C7C5C0;">
-            <img src="https://media.licdn.com/dms/image/D4D03AQGaY2yzNuYIgw/profile-displayphoto-shrink_400_400/0/1691484909307?e=1701907200&v=beta&t=fcRdTTTxfodKZbt48hBNTZkJLIQ8EmA0OngiCapSPso" alt="Maheshwari" style="width:100%">
-            <div class="container">
-                <h2>Maheshwari </h2>
+    <div class="col mx-2" style="">
+        <div class="card" style="padding:2px;">
+            <img src="https://media.licdn.com/dms/image/D4D03AQGaY2yzNuYIgw/profile-displayphoto-shrink_400_400/0/1691484909307?e=1701907200&v=beta&t=fcRdTTTxfodKZbt48hBNTZkJLIQ8EmA0OngiCapSPso" alt="Maheshwari"  class="rounded-img">
+            <div class="info-container">
+                <h5>Maheshwari </h5>
                 <p class="title">Student</p>    
                 <p>maheshwariudhayan1@gmail.com</p>
-                <p><button class="button" style="color: #1a1919;">Contact</button></p>
+                {% comment %} <p><button class="button" style="color: #1a1919;">Contact</button></p> {% endcomment %}
             </div>
         </div>
     </div>

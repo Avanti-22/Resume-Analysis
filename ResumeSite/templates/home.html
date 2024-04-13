@@ -1,10 +1,6 @@
 {% extends 'base.html' %}    
 {% block content %}
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
     <head>
         <meta charset="utf-8">
@@ -18,20 +14,20 @@
     <div class="container-md my-5" >
         <div class="row">
             <div class="col-sm-6 mb-3 mb-sm-0">
-              <div class="card">
-                <div class="card-body" style="background-color: #C7C5C0;">
-                  <h5 class="card-title">Analyze Your Resume</h5>
+              <div class="card" style="border-radius: 10px; background-color: #C7C5C0;">
+                <div class="card-body" >
+                  <h2 class="card-title">Analyze Your Resume</h2>
                   <p class="card-text">Are you looking for job? want to analyze and know the rank of your resume? Then click on Candidate login.</p>
-                  <a href="{% url "userview" %}" class="btn " style="background-color: #94949C;" >I am a Candidate!</a>
+                  <a href="{% url "userview" %}" class="btn btn-lg" style="background-color: #94949C;" >I am a Candidate!</a>
                 </div>
               </div>
             </div>
             <div class="col-sm-6">
-              <div class="card">
-                <div class="card-body" style="background-color: #C7C5C0;">
-                  <h5 class="card-title">Find Candidates for a Position</h5>
+              <div class="card" style="border-radius: 10px; background-color: #C7C5C0;">
+                <div class="card-body">
+                  <h2 class="card-title">Find Candidates for a Position</h2>
                   <p class="card-text">Are you looking for suitable candidates for your job description? Click on HR login to find matching resumes with your requirements.</p>
-                  <a href="{% url "hrview" %}" class="btn " style="background-color: #94949C;">I am a Recruiter!</a>
+                  <a href="{% url "hrview" %}" class="btn btn-lg " style="background-color: #94949C;">I am a Recruiter!</a>
                 </div>
               </div>
             </div>

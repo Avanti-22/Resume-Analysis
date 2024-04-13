@@ -1,0 +1,35 @@
+<!-- templates/after_new_jd.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Options after Job Description Creation</title>
+</head>
+<body>
+    <h1>Options after Job Description Creation</h1>
+    <h2>Select an action:</h2>
+    <div class="card job-card" style="background-color: #C7C5C0; border-radius: 1rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ job.Title }}</h5>
+            <p class="card-text">{{ job.Description }}</p>
+            <p class="card-text">{{ job.Required_Skills }}</p>
+            <a href="/rjob/{{ job.Job_id }}" class="btn" style="background-color: #94949C;">Rank Resumes for this Job Description</a>
+        </div>
+    </div>
+    <div class="container py-5" >
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col col-xl-10">
+            <div class="card" style="border-radius: 1rem;" >
+              <div class="row g-0" style="background-color: #C7C5C0; border-radius: 1rem;">
+                <div class="col-md-6 col-lg-7 d-flex align-items-center" >
+                  <div class="card-body p-4 p-lg-5 text-black">
+                    <a href="/batch_rjob/{{ job.Job_id }}" class="btn" style="background-color: #94949C;">Rank the uploaded Resumes for this Job Description</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>

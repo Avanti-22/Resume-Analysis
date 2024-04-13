@@ -5,116 +5,142 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Resume Analyzer</title>
+  <title>Skill Scan</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <style>
     body {
 
       background-image: url("{% static 'images\bg.png' %}");
+      {% comment %} background-color: hsla(0, 0%, 22%, 0.8); {% endcomment %}
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-size: cover;
       background-attachment: fixed;
       background-position: center;
     }
+
+    navbar {
+      font-size: large;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    navbar-nav a {
+      color: white;
+      text-transform: uppercase;
+      float: left;
+      text-align: center;
+      font-size: 18px;
+      line-height: 25px;
+      border-radius: 4px;
+    }
   </style>
-  {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-  </svg> {% endcomment %}
+  <!-- Font Awesome icons (free version)-->
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <!-- Google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/2d991706ce.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/2d991706ce.js" crossorigin="anonymous"></script>
+
 
   {% comment %} <h1>Hello, world!</h1> {% endcomment %}
-  <nav class="navbar navbar-expand-lg justify-content-between" style="background-color: #383838; ">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/home" style="color: white;">
-        <img src="{% static 'images\logo.png' %}" alt="" width="30" height="24"
-          class="d-inline-block align-text-top">Resume Analyzer</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+  <nav class="navbar navbar-expand-lg fixed-top "
+    style="background-color: #383838;">
+    <div class="container px-5">
+      <a class="navbar-brand me-auto ms-auto py-lg-0  align-items-end" href="/home" style="color: white; font-size:40px; font-family: 'Dancing Script';">
+        <img src="{% static 'images\logo.png' %}" alt="" width="70" height="70" class="d-inline-block "
+          style="padding: 0; margin-right: 3px;">Skill Scan</a>
+      <button class="navbar-toggler text-uppercase" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+        aria-label="Toggle navigation">Menu
+        <i class="fas fa-bars ms-1"></i>
+        {% comment %} <span class="navbar-toggler-icon"></span> {% endcomment %}
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <div class="collapse navbar-collapse ms-auto py-lg-0  align-items-end" id="navbarResponsive">
+        <ul class="navbar-nav text-uppercase  py-lg-0" style="padding-left: 230px;  font-size: 20px; ">
+          
+          <!-- Home, About Us, Contact Us, and FAQ links (common for all users) -->
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/home" style="color: white;">Home</a>
+            <a class="nav-link active" aria-current="page" href="/home" style="color: white; padding-left: 20px;"><i class="fa fa-fw fa-home"></i> Home</a>
           </li>
-          {% comment %} <li class="nav-item">
-            <a class="nav-link" href="" style="color: white;">Login/Register</a>
-          </li> {% endcomment %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-              style="color: white;">Login/Register</a>
+          <li class="nav-item">
+            <a class="nav-link" href="/aboutus" style="color: white; padding-left: 30px;"><i class="fa-regular fa-address-card"></i> About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contactus" style="color: white; padding-left: 30px;"><i class="fa fa-fw fa-envelope"></i> Contact Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/faq" style="color: white; padding-left: 30px;"><i class="fa-solid fa-question"></i> FAQS</a>
+          </li>
+          
+          {% if user.is_authenticated %}
+          
+          <li class="nav-item dropdown" style="padding-left: 30px;">
+            <a class="nav-link dropdown-toggle mr-5" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false" style="color: white;"><i class="fa-solid fa-user px-1"></i>{{user.username }}</a>
+            <ul class="dropdown-menu text-uppercase dropdown-menu-right">
+              {% if user.is_superuser %}
+              <li><a class="dropdown-item" href="{% url "hr_dash" %}"><i class="fa-solid fa-table-columns"></i> HR
+                Dashboard</a></li>
+            <li><a class="dropdown-item" href="{% url "hr_jd" %}"><i class="fa-solid fa-square-plus"></i>  Add New Job
+                Description</a></li>
+            <li><a class="dropdown-item" href="{% url "jd_rank" %}"><i class="fa-solid fa-ranking-star"></i>  Rank
+                Resumes</a></li>  
+              {% else%}  
+              <li><a class="dropdown-item" href="{% url "upload" %}"><i class="fa-solid fa-file-arrow-up"></i>  Upload
+                </a></li>
+              <li><a class="dropdown-item" href="{% url "jd_match" %}"><i class="fa-solid fa-rectangle-list"></i>  job
+                  descriptions</a></li>
+              {% endif %}
+              <!-- Common logout link for authenticated users -->
+              <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i>  Logout</a></li>
+          </li>
+          
+          {% else %}
+          <!-- Display these links for non-authenticated users -->
+          <li class="nav-item dropdown" style="padding-left: 30px;">
+            <a class="nav-link dropdown-toggle mr-5" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false" style="color: white;"><i class="fa fa-fw fa-user"></i>  Signin</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url "userlogin" %}">Login</a></li>
-              <li><a class="dropdown-item" href="{% url "userreg" %}">Register</a></li>
+              <li><a class="dropdown-item" href="{% url "userlogin" %}"><i class="fa fa-fw fa-user"></i>  Login</a></li>
+              <li><a class="dropdown-item" href="{% url "userreg" %}"><i class="fa-regular fa-registered"></i>  Register</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
               <li><a class="dropdown-item" href="{% url "hrview" %}">Login as Recruiter</a></li>
             </ul>
           </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="/aboutus" style="color: white;">About Us</a>
-          </li>
-          <li>
-            <a class="nav-link" href="/contactus" style="color: white;">Contact Us</a>
-          </li>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/faq" style="color: white;">FAQ</a>
-          </li>
-
-          {% comment %} protected links {% endcomment %}
-          <ul class="mr-sm-2 ml-auto">
-            <li class="nav-item dropdown">
-              {% if user.is_authenticated %}
-            
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;"><i class="fa-solid fa-user px-1"></i>{{user.username }}</a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a class="dropdown-item" href="{% url "jd" %}">job description</a></li>
-                {% comment %} <li><a class="dropdown-item" href="{% url "resume_matching" %}">Results</a></li> {% endcomment %}
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                </ul>
-              {%endif%}
-            </li>
-          </ul>
+          {% endif %}
         </ul>
       </div>
     </div>
   </nav>
-  
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{message.tags}} alert-dismissible fade show my-0 " role="alert">
-          {{ message }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        {% endfor %}
+  <div style="margin-top: 100px;">
+  </div>
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{message.tags}} alert-dismissible fade show my-0 " role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
 
-        {% endif %}
-
-        {% block content %}
-        {% endblock content %}
-      {% comment %} </main>
-    </div>
-  </div> {% endcomment %}
-  {% comment %} <ul class="messages">
-    <li{% if message.tags %} class="" {% endif %}>
-      </li>
-  </ul> {% endcomment %}
-
+  {% endif %}
+  <div style="font-size: 20px; padding-top: 50px; ">
+  {% block content %}
+  {% endblock content %}
+  </div>
 </body>
 
 </html>

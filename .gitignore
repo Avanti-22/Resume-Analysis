@@ -1,0 +1,16 @@
+venv
+.venv
+ResumeSite\venv\
+cache/models--xlnet-base-cased/snapshots/ceaa69c7bc5e512b5007106a7ccbb7daf24b2c79/pytorch_model.bin
+*.sqlite3
+*.pdf
+*.pyc
+*.py
+*.docx
+*.sqlite3
+*.bin
+*.xlsx
+*.xlsx
+*.xlsx
+ResumeSite/webapp/Extracted Data/Extracted.xlsx
+ResumeSite/db.sqlite3

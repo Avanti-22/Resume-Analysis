@@ -39,7 +39,7 @@ from transformers import pipeline
 warnings.filterwarnings('ignore')
 
 
-titles = ["Name", "Email", "Phone", "Education", "Experience", "Skills"]
+titles = ["Name", "Email", "Phone", "Skills","Matched"]
 resume_data={}
 
 
@@ -348,7 +348,7 @@ def extract_skills(nlp_text, noun_chunks):
 extract_skills(new_nlp,noun_chunks)
 extracted_skills=extract_skills(new_nlp,noun_chunks)
 print(extracted_skills)
-resume_data[titles[5]]=list_to_string(extracted_skills)
+resume_data[titles[3]]=list_to_string(extracted_skills)
 
 
 
@@ -383,7 +383,32 @@ def match_skills(skills):
     res = len(set(required) and set(matched)) / float(len(set(required) or set(matched))) * 100
     print("The percentage of skills matched is: ",res)
 
-match_skills(extracted_skills)
+    from math import sqrt
+
+    def dot_product(vec1, vec2):
+        return sum(x * y for x, y in zip(vec1, vec2))
+
+    def vector_length(vec):
+        return sqrt(sum(x * x for x in vec))
+
+    def cosine_similarity(vec1, vec2):
+        if vector_length(vec1) == 0 or vector_length(vec2) == 0:
+            return 0.0
+        return dot_product(vec1, vec2) / (vector_length(vec1) * vector_length(vec2))
+
+# Example usage:
+    required_skills = ["Python", "Java", "SQL", "Machine Learning", "Communication"]
+    candidate_skills = ["Python", "SQL", "Data Analysis"]
+
+# Convert skills to binary vectors
+    required_skills_vector = [1 if skill in required_skills else 0 for skill in required_skills]
+    candidate_skills_vector = [1 if skill in candidate_skills else 0 for skill in required_skills]
+
+    similarity_percentage = cosine_similarity(required_skills_vector, candidate_skills_vector) * 100
+    print("Candidate's skill fit percentage (using cosine similarity):", similarity_percentage)
+
+    return res
+
 
 
 
@@ -398,7 +423,7 @@ def extract_education(nlp_text):
     '''
     EDUCATION         = [
                     'CBSE', 'ICSE', 'X', 'XII', 'BE', 'B.E.', 'B.E', 'BS', 'B.S', 'ME', 'M.E', 'M.E.', 'MS', 'M.S', 'BTECH', 'MTECH', 
-                    'SSC', 'HSC'
+                    'SSC', 'HSC','B.Tech','BTech'
                     ]
     
     STOPWORDS         = set(stopwords.words('english'))
@@ -424,18 +449,19 @@ def extract_education(nlp_text):
     return education
 print("Education Qualification: ",extract_education(Text))
 
+
 tokenizer2 = AutoTokenizer.from_pretrained("Davlan/distilbert-base-multilingual-cased-ner-hrl")
 model2 = AutoModelForTokenClassification.from_pretrained("Davlan/distilbert-base-multilingual-cased-ner-hrl")
 nlp2 = pipeline("ner", model=model2, tokenizer=tokenizer2, aggregation_strategy="max")
+ner_results2 = nlp2(filtered_data)
 
-example = filtered_data
-ner_results2 = nlp2(example)
 print(ner_results2)
 
 person_names = [entity['word'] for entity in ner_results2 if entity['entity_group'] == 'PER']
-print(person_names)
 
 
+resume_data[titles[0]]=person_names[0]
+resume_data[titles[4]]= match_skills(extracted_skills)
 # import openpyxl
 from openpyxl import Workbook, load_workbook
 from datetime import datetime
@@ -462,18 +488,18 @@ timestamp = datetime.now().strftime("%Y-%m-%d")
 ws = wb.active
 # check if the current sheet has same timestamp
 if ws.title == timestamp:
-
     df = pd.DataFrame.from_dict([resume_data])
     
 else:
     # Create a new sheet with the timestamp as the name
     ws = wb.create_sheet(title=timestamp, index=0)
-    ws["A1"] = 'Email'
+    ws["A1"] = 'Email Id'
     ws["B1"] = 'Mobile No.'
     ws["C1"] = 'Skills'
-    ws["D1"] = 'person_names'
+    ws["D1"] = 'Name'
+    ws["E1"] = 'Matched'
     df = pd.DataFrame.from_dict([resume_data])
-    
+  
       
 for index, row in df.iterrows():
     ws.append(row.tolist())

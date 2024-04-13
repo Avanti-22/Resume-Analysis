@@ -1,32 +1,44 @@
 from django.db import models
 # Create your models here.
-class ResumeData(models.Model):
-    Resume_No = models.IntegerField(primary_key = True)
-    Name = models.CharField(max_length=200)
-    Email = models.EmailField("")
-    Mobile_No = models.IntegerField()
-    Skills = models.TextField(max_length=200)
-    Education = models.TextField(max_length=200)
-    Experience = models.TextField(max_length=200)
-def __str__(self):
-        return str(self.pk)
-    
+   
 class Resumeform(models.Model):
-    Name=models.CharField(max_length=122)
-    Email=models.CharField(max_length=122)
+    Resume_No = models.AutoField(primary_key = True)
+    R_Name=models.CharField(max_length=122,default='No Name Found')
+    R_Email=models.CharField(max_length=122,default='default@mail.com')
     Resumefile = models.FileField(upload_to='pdfs/',default='')
-    # ResumeId = models.DateTimeField()
-class Matched(models.Model):
-    Resume = models.ForeignKey(ResumeData, on_delete=models.CASCADE)
-    Extracted_skills = models.TextField()
-    Required_skills = models.TextField()
-    Matched_skills = models.TextField()
-    Percent_matched = models.DecimalField(decimal_places=2,max_digits=3)
-    
+    # def __str__(self):
+    #     return str(self.Resume_No)
+
+
 class JobDescription(models.Model):
     Title = models.CharField(max_length=200)
+    Description =models.TextField(max_length=200, default=' ')
     Required_Skills = models.TextField()
-    Requires_Experience = models.CharField(max_length=200)
+    Required_Experience = models.CharField(max_length=200)
+    Job_id= models.AutoField(primary_key= True)
+    # def __str__(self):
+    #     return str(self.Job_id) 
+    
+class ResumeData(models.Model):
+    Resume = models.ForeignKey(Resumeform, on_delete=models.CASCADE)  # Foreign key
+    Name = models.CharField(max_length=200, null=True, blank=True)
+    Email = models.EmailField(default='default@mail.com',null=True, blank=True)
+    Mobile_No = models.IntegerField(default=9999999999, null=True, blank=True)
+    Skills = models.TextField(max_length=200, default='No skills found')
+    Education = models.TextField(max_length=200, default='No education found')
+    Experience = models.TextField(max_length=200, default='No experience found')
+     
+    
+class Matched(models.Model):
+    Resume = models.ForeignKey(Resumeform, on_delete=models.CASCADE)  
+    Job= models.ForeignKey(JobDescription, on_delete=models.CASCADE)
+    Extracted_skills = models.TextField(default='No skills extracted')
+    Required_skills = models.TextField(default='No required skills provided')
+    Matched_skills = models.TextField(default='No matched skills')
+    Percent_matched = models.DecimalField(decimal_places=2,max_digits=5,default=0.00)
+    Name = models.CharField(max_length=200, null=True, blank=True)
+    Email = models.EmailField(default='default@mail.com',null=True, blank=True)
+    Mobile_No = models.IntegerField(default=9999999999, null=True, blank=True)
     
 class Contact(models.Model):
     Name=models.CharField(max_length=122)
