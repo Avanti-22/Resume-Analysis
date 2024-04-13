@@ -13,6 +13,8 @@
         }
         .card-text {
             color: #555;
+            max-height: 100px; /* Set maximum height */
+            overflow: hidden; /* Hide overflow content */
         }
         .btn {
             background-color: #94949C;
@@ -27,27 +29,33 @@
         }
     </style>
     <div class="container justify-content-center">
-        <h1 class="h1 font-weight-bold text-center my-4" style="color: white;">Job Descriptions</h1>
+        <h1 class="h1 font-weight-bold text-center my-4" style="color: white;">Job Descriptions From Remotive</h1>
         <div class="row">
             {% for job in jobs %}
-            <div class="col-md-4">
-                <div class="card job-card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ job.title }}</h5>
-                        <p class="card-text">{{ job.description }}</p>
-                        <p><strong>Company:</strong> {{ job.company_name }}</p>
+    <div class="col-md-4">
+        <div class="card job-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ job.title }}</h5>
+                <p class="card-text" id="jobDescription{{ forloop.counter }}">
+                    {% if job.description|length > 100 %}
+                        {{ job.description|slice:":100" }}... <!-- Display first 100 characters with ellipses -->
+                    {% else %}
+                        {{ job.description }}
+                    {% endif %}
+                </p>
+                <p><strong>Company:</strong> {{ job.company_name }}</p>
                 <p><strong>Category:</strong> {{ job.category }}</p>
-                <p><strong>Description:</strong> {{ job.description }}</p>
                 <p><strong>Tags:</strong> {% for tag in job.tags %}<span>{{ tag }}</span>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
                 <p><strong>Job Type:</strong> {{ job.job_type }}</p>
                 <p><strong>Publication Date:</strong> {{ job.publication_date }}</p>
                 <p><strong>Candidate Required Location:</strong> {{ job.candidate_required_location }}</p>
                 <p><strong>Salary:</strong> {{ job.salary }}</p>
-                        <a href="{{ job.url }}" class="btn">View Details</a>
-                    </div>
-                </div>
+                <a href="{{ job.url }}" class="btn">View Details</a>
             </div>
-            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+
         </div>
     </div>
 {% endblock content %}

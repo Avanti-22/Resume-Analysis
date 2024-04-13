@@ -145,6 +145,24 @@ def jd_for_matching(request):
     # print(jobs)# Assuming Job is your model containing job details
     return render(request, 'jd_for_matching.html', {'jobs': jobs})
 
+def remote_jobs_view(request):
+    url = 'https://remotive.com/api/remote-jobs'
+    response = requests.get(url)
+    data = response.json()
+    jobs = data.get('jobs', [])
+
+    # Remove HTML tags from job descriptions
+    for job in jobs:
+        html_content = job.get('description', '')
+        # Parse HTML content using BeautifulSoup
+        soup = BeautifulSoup(html_content, 'html.parser')
+        # Get text without HTML tags
+        text_without_html = soup.get_text(separator=' ')
+        # Update job description with text without HTML tags
+        job['description'] = text_without_html.strip()
+
+    return render(request, 'jobs.html', {'jobs': jobs})
+
 def resume_matching(request, job_id):
     resume_id = request.session.get('resume_id')
     # print(resume_id)
@@ -281,7 +299,7 @@ def hr_jd(request):
         
         request.session['uploaded_resume_ids'] = uploaded_resume_ids
         
-        job_des = JobDescription(Title=job_title, Required_Skills=requirements)
+        job_des = JobDescription(Title=job_title, Description=job_description, Required_Skills=requirements)
         job_des.save()
         new_job_id = job_des.Job_id
         request.session['new_job_id'] = new_job_id
@@ -329,17 +347,24 @@ def batch_resume_ranking(request, job_id):
         .values('percent_matched', 'name', 'email', 'resume_id', 'extracted_skills')
         .order_by('-percent_matched')
     )
-    # print(matched_data)
-    # Convert the queryset to a list of dictionaries
-    matched_list = list(matched_data)
-    # return matched_data
-    # Render template with ranked resumes
-    return render(request, 'resume_ranking.html', {'resumes': matched_data, 'job': job})
+    # Use a set to track seen resume_ids and filter out duplicates based on resume_id
+    seen_resume_ids = set()
+    unique_matched_data = []
+    for item in matched_data:
+        if item['resume_id'] not in seen_resume_ids:
+            seen_resume_ids.add(item['resume_id'])
+            unique_matched_data.append(item)
+    # print(unique_matched_data)
+    return render(request, 'resume_ranking.html', {'resumes': unique_matched_data, 'job': job})
+
+from django.shortcuts import render, get_object_or_404
+from .models import JobDescription, Matched
+from django.db.models import F
 
 def resume_ranking(request, job_id):
+    # Retrieve the JobDescription object based on job_id or return a 404 error if not found
+    job = get_object_or_404(JobDescription, Job_id=job_id)
     
-    job= get_object_or_404(JobDescription, Job_id=job_id)
-    # print(job)
     # Filter Matched records for the given job_id and annotate required fields
     matched_data = (
         Matched.objects
@@ -355,12 +380,18 @@ def resume_ranking(request, job_id):
         .values('percent_matched', 'name', 'email', 'mobile', 'resume_id', 'extracted_skills')
         .order_by('-percent_matched')
     )
-    # print(matched_data)
-    # Convert the queryset to a list of dictionaries
-    matched_list = list(matched_data)
-    # return matched_data
-    # Render template with ranked resumes
-    return render(request, 'resume_ranking.html', {'resumes': matched_data, 'job': job})
+    
+    # Use a set to track seen resume_ids and filter out duplicates based on resume_id
+    seen_resume_ids = set()
+    unique_matched_data = []
+    for item in matched_data:
+        if item['resume_id'] not in seen_resume_ids:
+            seen_resume_ids.add(item['resume_id'])
+            unique_matched_data.append(item)
+    # print(unique_matched_data)
+    # Render template with unique ranked resumes based on resume_id
+    return render(request, 'resume_ranking.html', {'resumes': unique_matched_data, 'job': job})
+
 
 def import_from_excel(request):
     if request.method == 'POST':
@@ -456,20 +487,3 @@ def matching_uploaded_with_new_jd(job_id,uploaded_resume_ids):
                     Mobile_No=mobile_number,
                     )
         
-def remote_jobs_view(request):
-    url = 'https://remotive.com/api/remote-jobs'
-    response = requests.get(url)
-    data = response.json()
-    jobs = data.get('jobs', [])
-
-    # Remove HTML tags from job descriptions
-    for job in jobs:
-        html_content = job.get('description', '')
-        # Parse HTML content using BeautifulSoup
-        soup = BeautifulSoup(html_content, 'html.parser')
-        # Get text without HTML tags
-        text_without_html = soup.get_text(separator=' ')
-        # Update job description with text without HTML tags
-        job['description'] = text_without_html.strip()
-
-    return render(request, 'jobs.html', {'jobs': jobs})
