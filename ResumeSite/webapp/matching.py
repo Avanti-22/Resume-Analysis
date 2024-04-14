@@ -62,10 +62,10 @@ def fetch_data(resume_id, job_id):
 
     filtered_sentence = [w for w in word_tokens if not w in stop_words]
     filtered_data = ' '.join(filtered_sentence)
-    # print(filtered_data)
+    # # print(filtered_data)
 
     # Extract Email
-    # print("E-mail: ", extract_email(filtered_data))
+    # # print("E-mail: ", extract_email(filtered_data))
     resume_data[titles[1]] = extract_email(filtered_data)
 
     # Stemming or Lemmatization
@@ -74,21 +74,21 @@ def fetch_data(resume_id, job_id):
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(filtered_data)
     lemmatized_sentence = " ".join([token.lemma_ for token in doc])
-    # print(lemmatized_sentence)
+    # # print(lemmatized_sentence)
 
     # Extract Name
     from spacy.matcher import Matcher
     new_matcher = Matcher(nlp.vocab)
     new_nlp = nlp(filtered_data)
-    # print(extract_name(new_nlp, new_matcher))
+    # # print(extract_name(new_nlp, new_matcher))
 
     # Extract Mobile Number
-    # print("Mobile No.: ", extract_mobile_number(filtered_data))
+    # # print("Mobile No.: ", extract_mobile_number(filtered_data))
     resume_data[titles[2]] = extract_mobile_number(filtered_data)
 
     # Extract Education
     Education_Qualification = extract_education(filteredtxt)
-    # print("Education_Qualification: ", Education_Qualification)
+    # # print("Education_Qualification: ", Education_Qualification)
     resume_data[titles[3]] = list_to_string(Education_Qualification)
     
     # Extract Skills
@@ -97,12 +97,12 @@ def fetch_data(resume_id, job_id):
     new_nlp = nlp(filtered_data)
     
     extracted_skills = extract_skills(new_nlp, noun_chunks)
-    # print(extracted_skills)
+    # # print(extracted_skills)
     resume_data[titles[4]] = list_to_string(extracted_skills)
 
     # Convert the list to a single string
     converted_data = list_to_string(extracted_skills)
-    # print("\nfinal skills extracted in list are:",converted_data)
+    # # print("\nfinal skills extracted in list are:",converted_data)
     # Create a new Excel sheet with the converted data
     create_excel_sheet([converted_data])
        
@@ -111,7 +111,7 @@ def fetch_data(resume_id, job_id):
     
     required = job.Required_Skills
     match_percent = match_skills(converted_data,required)
-    print("Match Percentage:", match_percent)
+    # print("Match Percentage:", match_percent)
 
     
     return match_percent, resume_data[titles[1]], resume_data[titles[2]], resume_data[titles[3]],  resume_data[titles[4]],
@@ -324,7 +324,7 @@ def extract_name(text, matcher):
     
     for i, start, end in matches:
         span = new_nlp[start:end]
-        print("Name: ",span)
+        # print("Name: ",span)
 
 def list_to_string(lst):
     # Convert the list to a string representation
@@ -335,7 +335,7 @@ def extract_skills(nlp_text, noun_chunks):
     import pandas as pd
 
     file = 'skills.csv'
-    print("Current Working Directory:", os.getcwd())
+    # print("Current Working Directory:", os.getcwd())
     absolute_path = os.path.join(os.path.dirname(__file__), file)
     tokens = [token.text for token in nlp_text if not token.is_stop]
 
@@ -355,7 +355,7 @@ def extract_skills(nlp_text, noun_chunks):
             skillset.append(token)
             
     extracted_skills=[i.capitalize() for i in set([i.lower() for i in skillset])]
-    print(extracted_skills)
+    # print(extracted_skills)
     return [i.capitalize() for i in set([i.lower() for i in skillset])]
 
 def create_excel_sheet(data):
@@ -403,16 +403,16 @@ def create_excel_sheet(data):
 # Matching the extracted skills with our requirements
 def match_skills(skills,required):
 
-    # print("\nSkills in Resume: ",skills)
-    # print("\nRequired skills are: ",required)
+    # # print("\nSkills in Resume: ",skills)
+    # # print("\nRequired skills are: ",required)
     
     required_skills_list = [skill.strip() for skill in required.split(',')]
-    # print("\ntest rqd",required_skills_list)
-    print(required_skills_list)
+    # # print("\ntest rqd",required_skills_list)
+    # print(required_skills_list)
     
     candi_skills_list = [skill.strip() for skill in skills.split(',')]
-    # print("\ntest rqd",candi_skills_list)
-    print(candi_skills_list)
+    # # print("\ntest rqd",candi_skills_list)
+    # print(candi_skills_list)
     
     def dot_product(vec1, vec2):
         return sum(x * y for x, y in zip(vec1, vec2))
@@ -435,8 +435,8 @@ def match_skills(skills,required):
 # Example usage:
     required_skills = lower_req
     candidate_skills = lower_skill
-    # print("\nrequired:",required_skills)
-    # print("\nskills:",candidate_skills)
+    # # print("\nrequired:",required_skills)
+    # # print("\nskills:",candidate_skills)
 
 # Convert skills to binary vectors
     required_skills_vector = [1 if skill in required_skills else 0 for skill in required_skills]
@@ -446,9 +446,9 @@ def match_skills(skills,required):
         if skill in candidate_skills:
             matching.append(skill)
     matched_skills= list_to_string(matching)
-    # print("\nmatched skills are:",matching)        
+    # # print("\nmatched skills are:",matching)        
     similarity_percentage = cosine_similarity(required_skills_vector, candidate_skills_vector) * 100
-    # print("\nCandidate's skill fit percentage (using cosine similarity):", similarity_percentage)
+    # # print("\nCandidate's skill fit percentage (using cosine similarity):", similarity_percentage)
     return similarity_percentage, matched_skills
 
 
@@ -542,17 +542,17 @@ def extract_education(nlp_text):
 #     cs = cp.parse(sent)
     
 #     # for i in cs.subtrees(filter=lambda x: x.label() == 'P'):
-#     #     print(i)
+#     #     # print(i)
     
 #     test = []
     
 #     for vp in list(cs.subtrees(filter=lambda x: x.label()=='P')):
 #         test.append(" ".join([i[0] for i in vp.leaves() if len(vp.leaves()) >= 2]))
 
-#     # Search the word 'experience' in the chunk and then print out the text after it
+#     # Search the word 'experience' in the chunk and then # print out the text after it
 #     x = [x[x.lower().index('experience') + 10:] for i, x in enumerate(test) if x and 'experience' in x.lower()]
 #     return x
-# print(extract_experience(Text))
+# # print(extract_experience(Text))
 
 
 
@@ -732,7 +732,7 @@ def extract_education(nlp_text):
 #                 else:
 #                     competency_dict[competency].append(item)
 #     return competency_dict
-# print(extract_competencies(Text, exp_list))    
+# # print(extract_competencies(Text, exp_list))    
 
 
 

@@ -14,14 +14,15 @@
 </style>
 </head>
 <div class="container justify-content-center">
-    <h1 class="h1 font-weight-bold text-center my-4" style="color: white;">Job Descriptions</h1>
+    <h1 class="h1 font-weight-bold text-center my-4" style="color: white;">Job Descriptions For Ranking</h1>
     <div class="row">
         {% for job in jobs %}
         <div class="col-md-4">
             <div class="card job-card" style="background-color: #C7C5C0; border-radius: 1rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ job.Title }}</h5>
-                    <p class="card-text">{{ job.description }}</p>
+                    <p class="card-text">{{ job.Description }}</p>
+                    <p class"card-text">{{ job.Required_Skills}}</p>
                     <a href="/rjob/{{ job.Job_id }}" class="btn" style="background-color: #94949C;">Rank Resumes for this Job Description</a>
                 </div>
             </div>
