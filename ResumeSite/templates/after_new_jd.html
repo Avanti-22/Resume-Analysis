@@ -13,18 +13,30 @@
   margin-right: 10px; /* Add margin to the right of each button */
   margin-bottom: 10px; /* Add margin below each button */
 }
+.card-text{
+  font-size:22px;
+}
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
 </style>
-<div class="container py-5">
+<div class="container py-1">
   <div class="row justify-content-center align-items-center">
+    <h1 class="my-3 text-center text-white">Newly Added Job Description</h1>
     <!-- First Card -->
-    <div class="col-md-6 mb-4">
-      <div class="card job-card">
-        <div class="card-body">
-          <h3 class="card-title">{{ job.Title }}</h3>
-          <p class="card-text">{{ job.Description }}</p>
-          <p class="card-text">{{ job.Required_Skills }}</p>
-          <a href="/rjob/{{ job.Job_id }}" class="btn" style="background-color: #94949C;">Rank Resumes for this Job Description</a>
-          <a href="/batch_rjob/{{ job.Job_id }}" class="btn" style="background-color: #94949C;">Rank the uploaded Resumes for this Job Description</a>
+    <div class="col-md-8 mb-4">
+      <div class="card job-card p-2">
+        <div class="card-body py-2">
+          <h3 class="card-title py-2">Title| {{ job.Title }}</h3>
+          <hr>
+          <h3 class="card-text py-2">Job Description:</h3> <p>{{ job.Description }}</p>
+          <h3 class="card-text py-2">Required Skills:</h3> <p>{{ job.Required_Skills }}</p>
+          <div class="btn-row py-2">
+          <a href="/rjob/{{ job.Job_id }}" class="btn p-2" style="background-color: #94949C; font-size:22px;">Rank Resumes for this Job Description</a>
+          <a href="/batch_rjob/{{ job.Job_id }}" class="btn p-2" style="background-color: #94949C; font-size:22px;">Rank the uploaded Resumes for this Job Description</a>
+          </div>
         </div>
       </div>
     </div>

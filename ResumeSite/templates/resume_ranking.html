@@ -18,8 +18,8 @@
 
 /* Style for table content */
 .table-content {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 20px;
+    {% comment %} font-weight: bold; {% endcomment %}
     margin-bottom: 20px;
 }
 </style>
@@ -27,15 +27,16 @@
     <div class="row justify-content-center align-items-center">
         <div class="col-md-12">
             <!-- Center-aligned heading above the card -->
-            <h1 class="my-5 text-center text-white">Resume Ranking Results For {{ job.Title }}</h1>
+            <h1 class="my-2 text-center text-white">Resume Ranking Results For {{ job.Title }}</h1>
             <div class="custom-card ">
-                <div class="table-content py-3 px-3">
-                    <h2>Job Title: </h2> <p>{{ job.Title }}<p>
-                    <h2>Job Description: </h2> <p>{{ job.Description }}<p>
-                    <h2>Required Skills: </h2> <p>{{ job.Required_Skills }}<p>
+                <div class="table-content py-1 px-3">
+                    <h3>Title | {{ job.Title }}</h3>
+                    <hr>
+                    <h3>Job Description: </h3> <p>{{ job.Description }}</p>
+                    <h3>Required Skills: </h3> <p>{{ job.Required_Skills }}</p>
                 </div>
-                <div class="row justify-content-center align-items-center py-3 px-3">
-                    <div class="col-md-12 py-3">
+                <div class="row justify-content-center align-items-center py-1 px-3">
+                    <div class="col-md-12 py-1">
                         {% if resumes %}
                             <table class="result-table table table-hover">
                                 <thead>

@@ -458,7 +458,7 @@ ner_results2 = nlp2(filtered_data)
 print(ner_results2)
 
 person_names = [entity['word'] for entity in ner_results2 if entity['entity_group'] == 'PER']
-
+print(person_names)
 
 resume_data[titles[0]]=person_names[0]
 resume_data[titles[4]]= match_skills(extracted_skills)
