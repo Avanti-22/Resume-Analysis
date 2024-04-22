@@ -32,6 +32,9 @@ from openpyxl import Workbook
 from datetime import datetime
 import pandas as pd
 from math import sqrt
+import tensorflow as tf
+from transformers import AutoTokenizer, AutoModelForTokenClassification
+from transformers import pipeline
 # from constants import STOPWORDS
 warnings.filterwarnings('ignore')
 filtered_data=[]
@@ -311,20 +314,29 @@ def extract_mobile_number(text):
             return number
 
 def extract_name(text, matcher):
-    import spacy
-    from spacy.matcher import Matcher
+    # import spacy
+    # from spacy.matcher import Matcher
 
-    nlp = spacy.load('en_core_web_sm')
-    # new_matcher = Matcher(nlp.vocab)
-    new_nlp = nlp(text)
+    # nlp = spacy.load('en_core_web_sm')
+    # # new_matcher = Matcher(nlp.vocab)
+    # new_nlp = nlp(text)
     
-    pattern = [{'POS': 'PROPN'}, {'POS': 'PROPN'}, {'POS': 'PROPN'}]
-    matcher.add('NAME',[pattern], on_match=None)
-    matches = matcher(new_nlp)
+    # pattern = [{'POS': 'PROPN'}, {'POS': 'PROPN'}, {'POS': 'PROPN'}]
+    # matcher.add('NAME',[pattern], on_match=None)
+    # matches = matcher(new_nlp)
     
-    for i, start, end in matches:
-        span = new_nlp[start:end]
-        # print("Name: ",span)
+    # for i, start, end in matches:
+    #     span = new_nlp[start:end]
+    #     # print("Name: ",span)
+    tokenizer2 = AutoTokenizer.from_pretrained("Davlan/distilbert-base-multilingual-cased-ner-hrl")
+    model2 = AutoModelForTokenClassification.from_pretrained("Davlan/distilbert-base-multilingual-cased-ner-hrl")
+    nlp2 = pipeline("ner", model=model2, tokenizer=tokenizer2, aggregation_strategy="max")
+    ner_results2 = nlp2(filtered_data)
+
+    print(ner_results2)
+
+    person_names = [entity['word'] for entity in ner_results2 if entity['entity_group'] == 'PER']
+    return person_names[0]
 
 def list_to_string(lst):
     # Convert the list to a string representation
