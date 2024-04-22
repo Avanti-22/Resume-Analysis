@@ -20,6 +20,7 @@ import constants as cs
 import string
 # import utils
 import pprint
+# from sklearn import pipeline
 from spacy.matcher import matcher
 import multiprocessing as mp
 import warnings
@@ -32,12 +33,17 @@ from openpyxl import Workbook
 from datetime import datetime
 import pandas as pd
 from math import sqrt
+import tensorflow as tf
+from transformers import AutoTokenizer, AutoModelForTokenClassification
+from transformers import pipeline
+
 # from constants import STOPWORDS
 warnings.filterwarnings('ignore')
 filtered_data=[]
 resume_data=[]
 titles = ["Name", "Email", "Phone", "Education", "Experience", "Skills"]
 resume_data={}
+text={}
 # main function
 def fetch_data(resume_id, job_id):
     
@@ -64,9 +70,11 @@ def fetch_data(resume_id, job_id):
     filtered_data = ' '.join(filtered_sentence)
     # # print(filtered_data)
 
+    
+    resume_data[titles[1]]= extract_name(filtered_data)
     # Extract Email
     # # print("E-mail: ", extract_email(filtered_data))
-    resume_data[titles[1]] = extract_email(filtered_data)
+    resume_data[titles[2]] = extract_email(filtered_data)
 
     # Stemming or Lemmatization
     import spacy
@@ -84,12 +92,12 @@ def fetch_data(resume_id, job_id):
 
     # Extract Mobile Number
     # # print("Mobile No.: ", extract_mobile_number(filtered_data))
-    resume_data[titles[2]] = extract_mobile_number(filtered_data)
+    resume_data[titles[3]] = extract_mobile_number(filtered_data)
 
     # Extract Education
     Education_Qualification = extract_education(filteredtxt)
     # # print("Education_Qualification: ", Education_Qualification)
-    resume_data[titles[3]] = list_to_string(Education_Qualification)
+    resume_data[titles[4]] = list_to_string(Education_Qualification)
     
     # Extract Skills
     noun_chunks = []
@@ -98,7 +106,7 @@ def fetch_data(resume_id, job_id):
     
     extracted_skills = extract_skills(new_nlp, noun_chunks)
     # # print(extracted_skills)
-    resume_data[titles[4]] = list_to_string(extracted_skills)
+    resume_data[titles[5]] = list_to_string(extracted_skills)
 
     # Convert the list to a single string
     converted_data = list_to_string(extracted_skills)
@@ -114,7 +122,7 @@ def fetch_data(resume_id, job_id):
     # print("Match Percentage:", match_percent)
 
     
-    return match_percent, resume_data[titles[1]], resume_data[titles[2]], resume_data[titles[3]],  resume_data[titles[4]],
+    return match_percent, resume_data[titles[1]], resume_data[titles[2]], resume_data[titles[3]],  resume_data[titles[4]], resume_data[titles[5]]
 
 #all the functions to be called
 #pdf to text
@@ -310,21 +318,40 @@ def extract_mobile_number(text):
         else:
             return number
 
-def extract_name(text, matcher):
-    import spacy
-    from spacy.matcher import Matcher
+# def extract_name(text, matcher):
+#     import spacy
+#     from spacy.matcher import Matcher
 
-    nlp = spacy.load('en_core_web_sm')
-    # new_matcher = Matcher(nlp.vocab)
-    new_nlp = nlp(text)
+#     nlp = spacy.load('en_core_web_sm')
+#     # new_matcher = Matcher(nlp.vocab)
+#     new_nlp = nlp(text)
     
-    pattern = [{'POS': 'PROPN'}, {'POS': 'PROPN'}, {'POS': 'PROPN'}]
-    matcher.add('NAME',[pattern], on_match=None)
-    matches = matcher(new_nlp)
+#     pattern = [{'POS': 'PROPN'}, {'POS': 'PROPN'}, {'POS': 'PROPN'}]
+#     matcher.add('NAME',[pattern], on_match=None)
+#     matches = matcher(new_nlp)
     
-    for i, start, end in matches:
-        span = new_nlp[start:end]
-        # print("Name: ",span)
+#     for i, start, end in matches:
+#         span = new_nlp[start:end]
+#         # print("Name: ",span)
+        
+def extract_name(text):
+    # tokenizer2 = AutoTokenizer.from_pretrained("Davlan/distilbert-base-multilingual-cased-ner-hrl")
+    # model2 = AutoModelForTokenClassification.from_pretrained("Davlan/distilbert-base-multilingual-cased-ner-hrl")
+    # nlp2 = pipeline("ner", model=model2, tokenizer=tokenizer2, aggregation_strategy="max")
+    
+    # # Perform NER and handle potential NoneType result
+    # ner_results2 = nlp2(text)
+    # if ner_results2 is None:
+    #     return "None"  # Return a default value or handle the case accordingly
+
+    # # Extract person names based on entity_group
+    # person_names = [entity['word'] for entity in ner_results2 if entity.get('entity_group') == 'PER']
+
+    # # Retrieve the first person name if available, otherwise return a default value
+    # name = person_names[0] if person_names else "None"
+    name= 'none'
+    return name
+
 
 def list_to_string(lst):
     # Convert the list to a string representation
@@ -386,11 +413,11 @@ def create_excel_sheet(data):
     else:
         # Create a new sheet with the timestamp as the name
         ws = wb.create_sheet(title=timestamp, index=0)
-        ws["E1"] = 'Name'
-        ws["A1"] = 'Email'
-        ws["B1"] = 'Mobile No.'
-        ws["C1"] = 'Eduaction'
-        ws["D1"] = 'Skills'
+        ws["A1"] = 'Name'
+        ws["B1"] = 'Email'
+        ws["C1"] = 'Mobile No.'
+        ws["D1"] = 'Eduaction'
+        ws["E1"] = 'Skills'
         df = pd.DataFrame.from_dict([resume_data])
     
       
@@ -458,7 +485,7 @@ def extract_education(nlp_text):
         r'\b(?:ME|M\.E\.?|M\.S\.?|Master of Engineering|Master of Science)\b',
         r'\b(?:BTECH|B\.TECH\.?|Bachelor of Technology)\b',
         r'\b(?:MTECH|M\.TECH\.?|Master of Technology)\b',
-        r'\b(?:X|XII)\b',
+        r'\b(?:X|XII|HSC|SSC|H\.S\.C\.?|S\.C\.C\.?)\b',  # Include HSC, SSC, H.S.C, S.C.C
         r'\b(?:Diploma)\b',
     ]
 

@@ -191,11 +191,12 @@ def resume_matching(request, job_id):
         resume_content = fetch_data(resume_id, job_id)
 
         # Extract data from fetch_data result
-        email = resume_content[1]
-        mobile_number = resume_content[2]
-        education = resume_content[3]
-        skills = resume_content[4]
-        name = resume.R_Name
+        name = resume_content[1]
+        email = resume_content[2]
+        mobile_number = resume_content[3]
+        education = resume_content[4]
+        skills = resume_content[5]
+        
         # Create new ResumeData object
         resume_data = ResumeData.objects.create(
             Resume_id=resume_id,
@@ -371,7 +372,7 @@ def resume_ranking(request, job_id):
         .filter(Job_id=job_id)
         .annotate(
             percent_matched=F('Percent_matched'),
-            name=F('Resume__R_Name'),  # Access name from related Resumeform
+            name=F('Name'),  # Access name from related Resumeform
             email=F('Email'),
             mobile=F('Mobile_No'),
             resume_id=F('Resume_id'),  # Access Resume_id from Matched model
@@ -426,6 +427,7 @@ def matching_with_new_jd(job_id):
         email = resume_data.Email
         mobile_number = resume_data.Mobile_No
         education = resume_data.Education
+        name = resume_data.Name
         skills = resume_data.Skills
         resume_id = resume_data.Resume_id
         # Calculate match percentage using match_skills function
@@ -444,6 +446,7 @@ def matching_with_new_jd(job_id):
             Resume_id=resume_id,                
             Job_id=job_id,
             Email=email,
+            Name=name,
             Mobile_No=mobile_number,
            )
 
@@ -457,15 +460,17 @@ def matching_uploaded_with_new_jd(job_id,uploaded_resume_ids):
         uploaded_resume_id= uploaded_resume.Resume_No
         resume_content = fetch_data(uploaded_resume_id, job_id)
         # Extract data from fetch_data result
-        email = resume_content[1]
-        mobile_number = resume_content[2]
-        education = resume_content[3]
-        skills = resume_content[4]
-
+        name = resume_content[1]
+        email = resume_content[2]
+        mobile_number = resume_content[3]
+        education = resume_content[4]
+        skills = resume_content[5]
+        
         # Create new ResumeData object
         resume_data = ResumeData.objects.create(
             Resume_id=uploaded_resume_id,
             Email=email,
+            Name=name,
             Mobile_No=mobile_number,
             Education=education,
             Skills=skills
@@ -484,6 +489,7 @@ def matching_uploaded_with_new_jd(job_id,uploaded_resume_ids):
                     Resume_id=uploaded_resume_id,                
                     Job_id=job_id,
                     Email=email,
+                    Name=name,
                     Mobile_No=mobile_number,
                     )
         

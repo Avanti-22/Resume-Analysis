@@ -12,7 +12,7 @@ class Resumeform(models.Model):
 
 class JobDescription(models.Model):
     Title = models.CharField(max_length=200)
-    Description =models.TextField(max_length=200, default=' ')
+    Description =models.TextField(max_length=1000, default=' ')
     Required_Skills = models.TextField()
     Required_Experience = models.CharField(max_length=200)
     Job_id= models.AutoField(primary_key= True)
