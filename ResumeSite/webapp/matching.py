@@ -317,7 +317,7 @@ def extract_mobile_number(text):
         else:
             return number
 
-def extract_name(text, matcher):
+def extract_name(text):
     # import spacy
     # from spacy.matcher import Matcher
 
@@ -335,11 +335,12 @@ def extract_name(text, matcher):
     tokenizer2 = AutoTokenizer.from_pretrained("Davlan/distilbert-base-multilingual-cased-ner-hrl")
     model2 = AutoModelForTokenClassification.from_pretrained("Davlan/distilbert-base-multilingual-cased-ner-hrl")
     nlp2 = pipeline("ner", model=model2, tokenizer=tokenizer2, aggregation_strategy="max")
-    ner_results2 = nlp2(filtered_data)
 
+    #example = """ Hello How are you doing I am fine Mrunal Kulkarni"""
+    ner_results2 = nlp2(text)
     print(ner_results2)
-
     person_names = [entity['word'] for entity in ner_results2 if entity['entity_group'] == 'PER']
+    print("YOUR NAME IS : ", person_names[0] if person_names else "No person name found")
     return person_names[0]
 
 def list_to_string(lst):
